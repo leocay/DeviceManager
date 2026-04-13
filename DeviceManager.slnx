@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DeviceManager.Api/DeviceManager.Api.csproj" />
+    <Project Path="src/DeviceManager.Application/DeviceManager.Application.csproj" />
+    <Project Path="src/DeviceManager.Contracts/DeviceManager.Contracts.csproj" />
+    <Project Path="src/DeviceManager.Domain/DeviceManager.Domain.csproj" />
+    <Project Path="src/DeviceManager.Infrastructure/DeviceManager.Infrastructure.csproj" />
+  </Folder>
+</Solution>
