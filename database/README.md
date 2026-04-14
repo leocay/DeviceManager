@@ -23,13 +23,13 @@ Server=localhost,1433;Database=DeviceManagerDb;User Id=sa;Password=YourStrong@Pa
 ## Tạo migration
 
 ```powershell
-dotnet ef migrations add InitialCreate --no-build --project src/DeviceManager.Infrastructure/DeviceManager.Infrastructure.csproj --startup-project src/DeviceManager.Api/DeviceManager.Api.csproj --context DeviceManager.Infrastructure.Persistence.ApplicationDbContext --output-dir Persistence/Migrations
+dotnet ef migrations add InitialCreate --no-build --project src/DeviceManagerBE.Infrastructure/DeviceManagerBE.Infrastructure.csproj --startup-project src/DeviceManagerBE/DeviceManagerBE.csproj --context DeviceManagerBE.Infrastructure.Persistence.ApplicationDbContext --output-dir Persistence/Migrations
 ```
 
 ## Apply migration vào database
 
 ```powershell
-dotnet ef database update --no-build --project src/DeviceManager.Infrastructure/DeviceManager.Infrastructure.csproj --startup-project src/DeviceManager.Api/DeviceManager.Api.csproj --context DeviceManager.Infrastructure.Persistence.ApplicationDbContext
+dotnet ef database update --no-build --project src/DeviceManagerBE.Infrastructure/DeviceManagerBE.Infrastructure.csproj --startup-project src/DeviceManagerBE/DeviceManagerBE.csproj --context DeviceManagerBE.Infrastructure.Persistence.ApplicationDbContext
 ```
 
 ## Tài khoản admin mặc định

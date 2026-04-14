@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\DeviceManagerFE.Application\DeviceManagerFE.Application.csproj" />
+    <ProjectReference Include="..\DeviceManagerFE.Domain\DeviceManagerFE.Domain.csproj" />
+    <ProjectReference Include="..\DeviceManagerFE.Contracts\DeviceManagerFE.Contracts.csproj" />
+    <ProjectReference Include="..\DeviceManagerBE.Contracts\DeviceManagerBE.Contracts.csproj" />
+  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+</Project>

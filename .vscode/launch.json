@@ -9,7 +9,7 @@
       "args": [
         "run",
         "--project",
-        "${workspaceFolder}/src/DeviceManager.Api/DeviceManager.Api.csproj",
+        "${workspaceFolder}/src/DeviceManagerBE/DeviceManagerBE.csproj",
         "--no-build"
       ],
       "cwd": "${workspaceFolder}",
@@ -24,7 +24,7 @@
       "args": [
         "run",
         "--project",
-        "${workspaceFolder}/src/DeviceManager.WebApp/DeviceManager.WebApp.csproj",
+        "${workspaceFolder}/src/DeviceManagerFE/DeviceManagerFE.csproj",
         "--no-build"
       ],
       "cwd": "${workspaceFolder}",

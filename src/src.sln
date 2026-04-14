@@ -3,17 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManager.Api", "DeviceManager.Api\DeviceManager.Api.csproj", "{C044253E-174C-8E84-345A-C84E53C71C4D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagerBE", "DeviceManagerBE\DeviceManagerBE.csproj", "{C044253E-174C-8E84-345A-C84E53C71C4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManager.Application", "DeviceManager.Application\DeviceManager.Application.csproj", "{F4AE0CB8-F482-4145-5F2B-812EE3B88510}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagerBE.Application", "DeviceManagerBE.Application\DeviceManagerBE.Application.csproj", "{F4AE0CB8-F482-4145-5F2B-812EE3B88510}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManager.Contracts", "DeviceManager.Contracts\DeviceManager.Contracts.csproj", "{F6DC31CF-FAF2-CBD5-692C-2A6730B87982}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagerBE.Contracts", "DeviceManagerBE.Contracts\DeviceManagerBE.Contracts.csproj", "{F6DC31CF-FAF2-CBD5-692C-2A6730B87982}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManager.Domain", "DeviceManager.Domain\DeviceManager.Domain.csproj", "{07444660-44AA-90AF-571B-8A2B80D58BF9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagerBE.Domain", "DeviceManagerBE.Domain\DeviceManagerBE.Domain.csproj", "{07444660-44AA-90AF-571B-8A2B80D58BF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManager.Infrastructure", "DeviceManager.Infrastructure\DeviceManager.Infrastructure.csproj", "{7AAD02A4-391F-E312-60DA-B368D044FE5F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagerBE.Infrastructure", "DeviceManagerBE.Infrastructure\DeviceManagerBE.Infrastructure.csproj", "{7AAD02A4-391F-E312-60DA-B368D044FE5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManager.WebApp", "DeviceManager.WebApp\DeviceManager.WebApp.csproj", "{94700361-D665-4F54-B71B-DF91E700F7E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagerFE", "DeviceManagerFE\DeviceManagerFE.csproj", "{94700361-D665-4F54-B71B-DF91E700F7E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagerFE.Domain", "DeviceManagerFE.Domain\DeviceManagerFE.Domain.csproj", "{EF8B129D-49C9-4F39-AA19-A3DF109B5876}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagerFE.Application", "DeviceManagerFE.Application\DeviceManagerFE.Application.csproj", "{D4F13675-39C7-401F-950F-3AD9C532DFA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagerFE.Contracts", "DeviceManagerFE.Contracts\DeviceManagerFE.Contracts.csproj", "{AF09B9A3-E888-4BC0-9E90-38EE3BC1DC9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagerFE.Infrastructure", "DeviceManagerFE.Infrastructure\DeviceManagerFE.Infrastructure.csproj", "{DF2336B9-DA35-4757-82E1-B5E8421CEE2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +105,54 @@ Global
 		{94700361-D665-4F54-B71B-DF91E700F7E7}.Release|x64.Build.0 = Release|Any CPU
 		{94700361-D665-4F54-B71B-DF91E700F7E7}.Release|x86.ActiveCfg = Release|Any CPU
 		{94700361-D665-4F54-B71B-DF91E700F7E7}.Release|x86.Build.0 = Release|Any CPU
+		{EF8B129D-49C9-4F39-AA19-A3DF109B5876}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF8B129D-49C9-4F39-AA19-A3DF109B5876}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF8B129D-49C9-4F39-AA19-A3DF109B5876}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EF8B129D-49C9-4F39-AA19-A3DF109B5876}.Debug|x64.Build.0 = Debug|Any CPU
+		{EF8B129D-49C9-4F39-AA19-A3DF109B5876}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EF8B129D-49C9-4F39-AA19-A3DF109B5876}.Debug|x86.Build.0 = Debug|Any CPU
+		{EF8B129D-49C9-4F39-AA19-A3DF109B5876}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF8B129D-49C9-4F39-AA19-A3DF109B5876}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF8B129D-49C9-4F39-AA19-A3DF109B5876}.Release|x64.ActiveCfg = Release|Any CPU
+		{EF8B129D-49C9-4F39-AA19-A3DF109B5876}.Release|x64.Build.0 = Release|Any CPU
+		{EF8B129D-49C9-4F39-AA19-A3DF109B5876}.Release|x86.ActiveCfg = Release|Any CPU
+		{EF8B129D-49C9-4F39-AA19-A3DF109B5876}.Release|x86.Build.0 = Release|Any CPU
+		{D4F13675-39C7-401F-950F-3AD9C532DFA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4F13675-39C7-401F-950F-3AD9C532DFA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4F13675-39C7-401F-950F-3AD9C532DFA4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D4F13675-39C7-401F-950F-3AD9C532DFA4}.Debug|x64.Build.0 = Debug|Any CPU
+		{D4F13675-39C7-401F-950F-3AD9C532DFA4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D4F13675-39C7-401F-950F-3AD9C532DFA4}.Debug|x86.Build.0 = Debug|Any CPU
+		{D4F13675-39C7-401F-950F-3AD9C532DFA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4F13675-39C7-401F-950F-3AD9C532DFA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4F13675-39C7-401F-950F-3AD9C532DFA4}.Release|x64.ActiveCfg = Release|Any CPU
+		{D4F13675-39C7-401F-950F-3AD9C532DFA4}.Release|x64.Build.0 = Release|Any CPU
+		{D4F13675-39C7-401F-950F-3AD9C532DFA4}.Release|x86.ActiveCfg = Release|Any CPU
+		{D4F13675-39C7-401F-950F-3AD9C532DFA4}.Release|x86.Build.0 = Release|Any CPU
+		{AF09B9A3-E888-4BC0-9E90-38EE3BC1DC9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF09B9A3-E888-4BC0-9E90-38EE3BC1DC9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF09B9A3-E888-4BC0-9E90-38EE3BC1DC9D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AF09B9A3-E888-4BC0-9E90-38EE3BC1DC9D}.Debug|x64.Build.0 = Debug|Any CPU
+		{AF09B9A3-E888-4BC0-9E90-38EE3BC1DC9D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AF09B9A3-E888-4BC0-9E90-38EE3BC1DC9D}.Debug|x86.Build.0 = Debug|Any CPU
+		{AF09B9A3-E888-4BC0-9E90-38EE3BC1DC9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF09B9A3-E888-4BC0-9E90-38EE3BC1DC9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF09B9A3-E888-4BC0-9E90-38EE3BC1DC9D}.Release|x64.ActiveCfg = Release|Any CPU
+		{AF09B9A3-E888-4BC0-9E90-38EE3BC1DC9D}.Release|x64.Build.0 = Release|Any CPU
+		{AF09B9A3-E888-4BC0-9E90-38EE3BC1DC9D}.Release|x86.ActiveCfg = Release|Any CPU
+		{AF09B9A3-E888-4BC0-9E90-38EE3BC1DC9D}.Release|x86.Build.0 = Release|Any CPU
+		{DF2336B9-DA35-4757-82E1-B5E8421CEE2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF2336B9-DA35-4757-82E1-B5E8421CEE2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF2336B9-DA35-4757-82E1-B5E8421CEE2C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DF2336B9-DA35-4757-82E1-B5E8421CEE2C}.Debug|x64.Build.0 = Debug|Any CPU
+		{DF2336B9-DA35-4757-82E1-B5E8421CEE2C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DF2336B9-DA35-4757-82E1-B5E8421CEE2C}.Debug|x86.Build.0 = Debug|Any CPU
+		{DF2336B9-DA35-4757-82E1-B5E8421CEE2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF2336B9-DA35-4757-82E1-B5E8421CEE2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF2336B9-DA35-4757-82E1-B5E8421CEE2C}.Release|x64.ActiveCfg = Release|Any CPU
+		{DF2336B9-DA35-4757-82E1-B5E8421CEE2C}.Release|x64.Build.0 = Release|Any CPU
+		{DF2336B9-DA35-4757-82E1-B5E8421CEE2C}.Release|x86.ActiveCfg = Release|Any CPU
+		{DF2336B9-DA35-4757-82E1-B5E8421CEE2C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

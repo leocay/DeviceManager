@@ -1,10 +1,14 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="src/DeviceManager.Api/DeviceManager.Api.csproj" />
-    <Project Path="src/DeviceManager.Application/DeviceManager.Application.csproj" />
-    <Project Path="src/DeviceManager.Contracts/DeviceManager.Contracts.csproj" />
-    <Project Path="src/DeviceManager.Domain/DeviceManager.Domain.csproj" />
-    <Project Path="src/DeviceManager.Infrastructure/DeviceManager.Infrastructure.csproj" />
-    <Project Path="src/DeviceManager.WebApp/DeviceManager.WebApp.csproj" />
+    <Project Path="src/DeviceManagerBE/DeviceManagerBE.csproj" />
+    <Project Path="src/DeviceManagerBE.Application/DeviceManagerBE.Application.csproj" />
+    <Project Path="src/DeviceManagerBE.Contracts/DeviceManagerBE.Contracts.csproj" />
+    <Project Path="src/DeviceManagerBE.Domain/DeviceManagerBE.Domain.csproj" />
+    <Project Path="src/DeviceManagerBE.Infrastructure/DeviceManagerBE.Infrastructure.csproj" />
+    <Project Path="src/DeviceManagerFE.Application/DeviceManagerFE.Application.csproj" />
+    <Project Path="src/DeviceManagerFE.Contracts/DeviceManagerFE.Contracts.csproj" />
+    <Project Path="src/DeviceManagerFE.Domain/DeviceManagerFE.Domain.csproj" />
+    <Project Path="src/DeviceManagerFE.Infrastructure/DeviceManagerFE.Infrastructure.csproj" />
+    <Project Path="src/DeviceManagerFE/DeviceManagerFE.csproj" />
   </Folder>
 </Solution>

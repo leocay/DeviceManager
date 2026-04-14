@@ -39,7 +39,7 @@
         "--launch-profile",
         "http",
         "--project",
-        "src/DeviceManager.Api/DeviceManager.Api.csproj"
+        "src/DeviceManagerBE/DeviceManagerBE.csproj"
       ],
       "isBackground": true,
       "problemMatcher": [
@@ -57,7 +57,7 @@
       "args": [
         "run",
         "--project",
-        "src/DeviceManager.WebApp/DeviceManager.WebApp.csproj"
+        "src/DeviceManagerFE/DeviceManagerFE.csproj"
       ],
       "isBackground": true,
       "problemMatcher": [

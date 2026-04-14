@@ -1,0 +1,61 @@
+﻿@page "/"
+@inherits HomePageBase
+
+<PageTitle>AssetCentral - Dang nhap quan tri vien</PageTitle>
+
+<main class="login-shell">
+	<section class="login-wrapper">
+		<header class="brand-header">
+			<h1 class="brand-title">AssetCentral</h1>
+			<p class="brand-subtitle">Admin Control Portal</p>
+		</header>
+
+		<article class="login-card">
+			<header class="login-head">
+				<h2>Dang nhap</h2>
+				<p>Vui long nhap thong tin de truy cap he thong.</p>
+			</header>
+
+			@if (!string.IsNullOrWhiteSpace(StatusMessage))
+			{
+				<div class="status-banner @(IsError ? "error" : "ok")">@StatusMessage</div>
+			}
+
+			<EditForm Model="Model" OnValidSubmit="HandleSubmitAsync" FormName="LoginForm" method="post" class="login-form">
+				<DataAnnotationsValidator />
+
+				<div class="field-block">
+					<label for="username">TEN DANG NHAP</label>
+					<div class="input-wrap">
+						<span class="material-symbols-outlined">person</span>
+						<InputText id="username" @bind-Value="Model.Username" placeholder="admin" autocomplete="username" />
+					</div>
+					<ValidationMessage For="() => Model.Username" />
+				</div>
+
+				<div class="field-block">
+					<label for="password">MAT KHAU</label>
+					<div class="input-wrap">
+						<span class="material-symbols-outlined">lock</span>
+						<InputText id="password" @bind-Value="Model.Password" type="password" placeholder="••••••••" autocomplete="current-password" />
+					</div>
+					<ValidationMessage For="() => Model.Password" />
+				</div>
+
+				<label class="remember-row" for="remember">
+					<InputCheckbox id="remember" @bind-Value="Model.RememberMe" />
+					<span>Ghi nho thiet bi nay</span>
+				</label>
+
+				<button type="submit" class="login-btn" disabled="@Submitting">
+					<span>@(Submitting ? "Dang xu ly..." : "Dang nhap")</span>
+					<span class="material-symbols-outlined">login</span>
+				</button>
+			</EditForm>
+
+			<footer class="login-foot">
+				<p>Phien ban 2.4.0 - Enterprise Edition</p>
+			</footer>
+		</article>
+	</section>
+</main>
