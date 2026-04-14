@@ -13,7 +13,27 @@ public class AuthApiClient
 
     public async Task<LoginResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
     {
-        var response = await _httpClient.PostAsJsonAsync("/api/auth/login", request, cancellationToken);
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.PostAsJsonAsync("/api/auth/login", request, cancellationToken);
+        }
+        catch (HttpRequestException)
+        {
+            return new LoginResponse
+            {
+                Success = false,
+                Message = $"Khong ket noi duoc backend tai {_httpClient.BaseAddress}. Hay dam bao API dang chay."
+            };
+        }
+        catch (TaskCanceledException)
+        {
+            return new LoginResponse
+            {
+                Success = false,
+                Message = "Yeu cau den backend bi timeout. Hay thu lai sau."
+            };
+        }
 
         if (response.IsSuccessStatusCode)
         {

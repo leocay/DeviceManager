@@ -1,8 +1,10 @@
 using DeviceManager.Application.Services.Auth;
+using DeviceManager.Application.Services.Device;
 using DeviceManager.Infrastructure.Auth;
 using DeviceManager.Infrastructure.Persistence;
 using DeviceManager.Infrastructure.Security;
 using DeviceManager.Infrastructure.Repositories.Auth;
+using DeviceManager.Infrastructure.Repositories.Device;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +29,7 @@ public static class DependencyInjection
         });
 
         services.AddScoped<IAdminReadRepository, AdminReadRepository>();
+        services.AddScoped<IDeviceReadRepository, DeviceReadRepository>();
         services.AddScoped<IPasswordHasher, Sha256PasswordHasher>();
         services.AddScoped<IAccessTokenGenerator, JwtAccessTokenGenerator>();
 

@@ -7,12 +7,31 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".DeviceManager.WebApp.Session";
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.IdleTimeout = TimeSpan.FromHours(8);
+});
+
 builder.Services.AddHttpClient<AuthApiClient>((serviceProvider, client) =>
 {
     var configuration = serviceProvider.GetRequiredService<IConfiguration>();
     var baseUrl = configuration["BackendApi:BaseUrl"] ?? "http://localhost:5144";
     client.BaseAddress = new Uri(baseUrl);
 });
+
+builder.Services.AddHttpClient<DeviceApiClient>((serviceProvider, client) =>
+{
+    var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+    var baseUrl = configuration["BackendApi:BaseUrl"] ?? "http://localhost:5144";
+    client.BaseAddress = new Uri(baseUrl);
+});
+
+builder.Services.AddScoped<AuthSessionState>();
 
 var app = builder.Build();
 
@@ -27,6 +46,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+app.UseSession();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()

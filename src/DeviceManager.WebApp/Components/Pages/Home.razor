@@ -1,5 +1,8 @@
 ﻿@page "/"
 @inject DeviceManager.WebApp.Services.AuthApiClient AuthApiClient
+@inject DeviceManager.WebApp.Services.AuthSessionState AuthSessionState
+@inject NavigationManager NavigationManager
+@inject IHttpContextAccessor HttpContextAccessor
 
 <PageTitle>AssetCentral - Dang nhap quan tri vien</PageTitle>
 
@@ -21,7 +24,7 @@
 				<div class="status-banner @(_isError ? "error" : "ok")">@_statusMessage</div>
 			}
 
-			<EditForm Model="_model" OnValidSubmit="HandleSubmitAsync" class="login-form">
+			<EditForm Model="_model" OnValidSubmit="HandleSubmitAsync" FormName="LoginForm" method="post" class="login-form">
 				<DataAnnotationsValidator />
 
 				<div class="field-block">
@@ -61,7 +64,8 @@
 </main>
 
 @code {
-	private LoginFormModel _model = new();
+	[Microsoft.AspNetCore.Components.SupplyParameterFromForm(FormName = "LoginForm")]
+	private LoginFormModel _model { get; set; } = new();
 	private bool _submitting;
 	private string? _statusMessage;
 	private bool _isError;
@@ -70,27 +74,39 @@
 	{
 		_submitting = true;
 		_statusMessage = null;
+		LoginResponse result;
 
 		try
 		{
-			var result = await AuthApiClient.LoginAsync(new LoginRequest
+			result = await AuthApiClient.LoginAsync(new LoginRequest
 			{
 				Username = _model.Username,
 				Password = _model.Password,
 				RememberMe = _model.RememberMe
 			});
-
-			_isError = !result.Success;
-			_statusMessage = result.Success
-				? $"Xin chao {result.FullName}. Dang nhap thanh cong vao backend."
-				: result.Message;
 		}
 		catch
 		{
 			_isError = true;
 			_statusMessage = "Khong the ket noi backend. Hay kiem tra API da chay o cong cau hinh.";
+			_submitting = false;
+			return;
 		}
-		finally
+
+		_isError = !result.Success;
+		_statusMessage = result.Success
+			? $"Xin chao {result.FullName}. Dang nhap thanh cong vao backend."
+			: result.Message;
+
+		if (result.Success)
+		{
+			AuthSessionState.AccessToken = result.AccessToken;
+			AuthSessionState.FullName = result.FullName;
+			HttpContextAccessor.HttpContext?.Session.SetString("AccessToken", result.AccessToken ?? string.Empty);
+			HttpContextAccessor.HttpContext?.Session.SetString("FullName", result.FullName ?? string.Empty);
+			NavigationManager.NavigateTo("/devices", forceLoad: true);
+		}
+		else
 		{
 			_submitting = false;
 		}

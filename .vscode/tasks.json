@@ -29,6 +29,53 @@
       "problemMatcher": [
         "$msCompile"
       ]
+    },
+    {
+      "label": "run-api",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--launch-profile",
+        "http",
+        "--project",
+        "src/DeviceManager.Api/DeviceManager.Api.csproj"
+      ],
+      "isBackground": true,
+      "problemMatcher": [
+        "$msCompile"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "run-webapp",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "src/DeviceManager.WebApp/DeviceManager.WebApp.csproj"
+      ],
+      "isBackground": true,
+      "problemMatcher": [
+        "$msCompile"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "run-all",
+      "dependsOn": [
+        "run-api",
+        "run-webapp"
+      ],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
     }
   ]
 }
