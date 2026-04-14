@@ -33,5 +33,15 @@ public class AdminConfiguration : IEntityTypeConfiguration<Admin>
         builder.Property(x => x.CreatedAt)
             .HasDefaultValueSql("GETDATE()")
             .IsRequired();
+
+        builder.HasData(new Admin
+        {
+            AdminId = AdminSeed.DefaultAdminId,
+            Username = AdminSeed.DefaultUsername,
+            PasswordHash = AdminSeed.DefaultPasswordHash,
+            FullName = AdminSeed.DefaultFullName,
+            Email = null,
+            CreatedAt = AdminSeed.DefaultCreatedAt
+        });
     }
 }

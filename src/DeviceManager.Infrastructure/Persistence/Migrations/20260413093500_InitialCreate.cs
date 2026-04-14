@@ -1,4 +1,5 @@
 using System;
+using DeviceManager.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -130,6 +131,11 @@ namespace DeviceManager.Infrastructure.Persistence.Migrations
                 column: "Username",
                 unique: true);
 
+            migrationBuilder.InsertData(
+                table: "Admins",
+                columns: new[] { "AdminId", "CreatedAt", "Email", "FullName", "PasswordHash", "Username" },
+                values: new object[] { AdminSeed.DefaultAdminId, AdminSeed.DefaultCreatedAt, null, AdminSeed.DefaultFullName, AdminSeed.DefaultPasswordHash, AdminSeed.DefaultUsername });
+
             migrationBuilder.CreateIndex(
                 name: "IX_DeviceLogs_ActionTime",
                 table: "DeviceLogs",
@@ -171,6 +177,11 @@ namespace DeviceManager.Infrastructure.Persistence.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DeleteData(
+                table: "Admins",
+                keyColumn: "AdminId",
+                keyValue: AdminSeed.DefaultAdminId);
+
             migrationBuilder.DropTable(
                 name: "Admins");
 

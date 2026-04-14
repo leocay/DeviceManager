@@ -1,0 +1,48 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Backend API",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/src/DeviceManager.Api/DeviceManager.Api.csproj",
+        "--no-build"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "preLaunchTask": "build-all"
+    },
+    {
+      "name": "Debug Frontend Blazor",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/src/DeviceManager.WebApp/DeviceManager.WebApp.csproj",
+        "--no-build"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "Now listening on:\\s+(https?://\\S+)"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Run BE + FE",
+      "configurations": [
+        "Debug Backend API",
+        "Debug Frontend Blazor"
+      ],
+      "stopAll": true
+    }
+  ]
+}

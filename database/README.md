@@ -31,3 +31,12 @@ dotnet ef migrations add InitialCreate --no-build --project src/DeviceManager.In
 ```powershell
 dotnet ef database update --no-build --project src/DeviceManager.Infrastructure/DeviceManager.Infrastructure.csproj --startup-project src/DeviceManager.Api/DeviceManager.Api.csproj --context DeviceManager.Infrastructure.Persistence.ApplicationDbContext
 ```
+
+## Tài khoản admin mặc định
+
+Khi tạo database lần đầu, hệ thống sẽ seed sẵn một tài khoản admin:
+
+- Username: `admin`
+- Password: `Admin@123456`
+
+Mật khẩu được lưu dưới dạng hash trong database. Nên đổi ngay sau khi đăng nhập lần đầu.

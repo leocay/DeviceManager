@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "free-debug-ports",
+      "type": "process",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/.vscode/free-debug-ports.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "build-all",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "src/src.sln"
+      ],
+      "dependsOn": [
+        "free-debug-ports"
+      ],
+      "group": "build",
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    }
+  ]
+}

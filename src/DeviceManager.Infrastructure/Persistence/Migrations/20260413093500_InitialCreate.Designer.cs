@@ -62,6 +62,16 @@ namespace DeviceManager.Infrastructure.Persistence.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
+                    b.HasData(new
+                    {
+                        AdminId = AdminSeed.DefaultAdminId,
+                        CreatedAt = AdminSeed.DefaultCreatedAt,
+                        Email = (string)null,
+                        FullName = AdminSeed.DefaultFullName,
+                        PasswordHash = AdminSeed.DefaultPasswordHash,
+                        Username = AdminSeed.DefaultUsername
+                    });
+
                     b.ToTable("Admins", (string)null);
                 });
 
