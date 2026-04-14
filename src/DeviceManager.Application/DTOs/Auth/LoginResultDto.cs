@@ -1,10 +1,11 @@
-namespace DeviceManager.Contracts.Auth;
+namespace DeviceManager.Application.DTOs.Auth;
 
-public class LoginResponse
+public sealed class LoginResultDto
 {
     public bool Success { get; set; }
     public string Message { get; set; } = string.Empty;
     public string? FullName { get; set; }
     public string? AccessToken { get; set; }
     public DateTime? ExpiresAtUtc { get; set; }
+    public string? ErrorCode { get; set; }
 }
