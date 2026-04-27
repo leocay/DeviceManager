@@ -6,10 +6,10 @@
 <main class="inventory-shell">
     <header class="topbar">
         <div class="topbar-left">
-            <button type="button" class="icon-btn" title="Thông báo">
+            <button type="button" class="icon-btn" title="Thong bao">
                 <span class="material-symbols-outlined">notifications</span>
             </button>
-            <button type="button" class="icon-btn" title="Trợ giúp">
+            <button type="button" class="icon-btn" title="Ho tro">
                 <span class="material-symbols-outlined">help</span>
             </button>
         </div>
@@ -18,43 +18,43 @@
                 <span class="topbar-name">@DisplayName</span>
                 <span class="topbar-role">Administrator</span>
             </div>
-            <span class="avatar">A</span>
+            <span class="avatar">@AvatarText</span>
         </div>
     </header>
 
     <section class="inventory-wrapper">
         <header class="inventory-header">
             <div>
-                <h1>Danh sách thiết bị</h1>
-                <p>Quản lý và theo dõi @(TotalCount.ToString("N0")) tài sản thiết bị trong toàn hệ thống.</p>
+                <h1>Danh sach thiet bi</h1>
+                <p>Quan ly va theo doi @(TotalCount.ToString("N0")) tai san thiet bi trong toan he thong.</p>
             </div>
-            <button type="button" class="add-device-btn" title="Thêm thiết bị mới">
+            <button type="button" class="add-device-btn" title="Them thiet bi moi" @onclick="OpenCreateDevicePage">
                 <span class="material-symbols-outlined">add</span>
-                <span>Thêm thiết bị mới</span>
+                <span>Them thiet bi moi</span>
             </button>
         </header>
 
         <section class="inventory-filters">
             <div class="search-wrap">
                 <span class="material-symbols-outlined">search</span>
-                <input value="@Query.SearchTerm" @oninput="OnSearchInputAsync" placeholder="Tìm kiếm theo tên hoặc số serial..." />
+                <input value="@Query.SearchTerm" @oninput="OnSearchInputAsync" placeholder="Tim kiem theo ten hoac so serial..." />
             </div>
 
             <select value="@Query.CategoryId" @onchange="OnCategoryChangedAsync">
                 @foreach (var category in CategoryOptions)
                 {
-                    <option value="@category.Value">Loại thiết bị: @category.Label</option>
+                    <option value="@category.Value">Loai thiet bi: @category.Label</option>
                 }
             </select>
 
             <select value="@Query.Status" @onchange="OnStatusChangedAsync">
                 @foreach (var status in StatusOptions)
                 {
-                    <option value="@status.Value">Trạng thái: @status.Label</option>
+                    <option value="@status.Value">Trang thai: @status.Label</option>
                 }
             </select>
 
-            <button type="button" class="clear-filter-btn" @onclick="ClearFiltersAsync">Xóa bộ lọc</button>
+            <button type="button" class="clear-filter-btn" @onclick="ClearFiltersAsync">Xoa bo loc</button>
         </section>
 
         @if (!string.IsNullOrWhiteSpace(ErrorMessage))
@@ -64,11 +64,11 @@
 
         @if (Loading)
         {
-            <p>Đang tải dữ liệu...</p>
+            <p>Dang tai du lieu...</p>
         }
         else if (Devices.Count == 0)
         {
-            <p>Không có dữ liệu thiết bị.</p>
+            <p>Khong co du lieu thiet bi.</p>
         }
         else
         {
@@ -76,11 +76,11 @@
                 <table class="inventory-table">
                     <thead>
                         <tr>
-                            <th>Tên thiết bị</th>
-                            <th>Loại</th>
-                            <th>Số serial</th>
-                            <th>Trạng thái</th>
-                            <th class="text-right">Thao tác</th>
+                            <th>Ten thiet bi</th>
+                            <th>Loai</th>
+                            <th>So serial</th>
+                            <th>Trang thai</th>
+                            <th class="text-right">Thao tac</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -98,13 +98,13 @@
                                 </td>
                                 <td class="text-right">
                                     <div class="row-actions">
-                                        <button type="button" class="action-btn" title="Xem chi tiết">
+                                        <button type="button" class="action-btn" title="Xem chi tiet">
                                             <span class="material-symbols-outlined">visibility</span>
                                         </button>
-                                        <button type="button" class="action-btn" title="Chỉnh sửa">
+                                        <button type="button" class="action-btn" title="Chinh sua">
                                             <span class="material-symbols-outlined">edit</span>
                                         </button>
-                                        <button type="button" class="action-btn" title="Xóa">
+                                        <button type="button" class="action-btn" title="Xoa">
                                             <span class="material-symbols-outlined">delete</span>
                                         </button>
                                     </div>
@@ -116,8 +116,8 @@
             </div>
 
             <footer class="inventory-footer">
-                <span>Hiển thị @GetDisplayRangeText() thiết bị</span>
-                <div class="pager-actions" aria-label="Phân trang">
+                <span>Hien thi @GetDisplayRangeText() thiet bi</span>
+                <div class="pager-actions" aria-label="Phan trang">
                     <button type="button" class="pager-nav" @onclick="PreviousPageAsync" disabled="@(Query.PageNumber <= 1 || Loading)">
                         <span class="material-symbols-outlined">chevron_left</span>
                     </button>

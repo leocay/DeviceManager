@@ -37,7 +37,7 @@ public class HomePageBase : ComponentBase
         catch
         {
             IsError = true;
-            StatusMessage = "KhÃ´ng thá»ƒ káº¿t ná»‘i backend. HÃ£y kiá»ƒm tra API Ä‘Ã£ cháº¡y á»Ÿ cá»•ng cáº¥u hÃ¬nh.";
+            StatusMessage = "Không thể kết nối backend. Hãy kiểm tra API đã chạy ở cổng cấu hình.";
             Submitting = false;
             return;
         }

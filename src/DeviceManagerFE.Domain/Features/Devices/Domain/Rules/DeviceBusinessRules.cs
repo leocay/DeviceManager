@@ -1,4 +1,4 @@
-﻿using DeviceManagerFE.Features.Devices.Domain.Entities;
+using DeviceManagerFE.Features.Devices.Domain.Entities;
 
 namespace DeviceManagerFE.Features.Devices.Domain.Rules;
 
@@ -11,17 +11,16 @@ public static class DeviceBusinessRules
             return $"{device.Brand} {device.Model}";
         }
 
-        return "Thiáº¿t bá»‹ cÃ´ng nghá»‡";
+        return "Thiet bi cong nghe";
     }
 
     public static string ToLocalizedStatus(string? status) => status switch
     {
-        "Available" => "Má»›i",
-        "In Use" => "Äang sá»­ dá»¥ng",
-        "Maintenance" => "Báº£o trÃ¬",
-        "Reserved" => "ÄÃ£ Ä‘áº·t trÆ°á»›c",
-        "Retired" => "Há»ng",
-        _ => string.IsNullOrWhiteSpace(status) ? "KhÃ´ng rÃµ" : status
+        "Available" => "Moi",
+        "In Use" => "Dang su dung",
+        "Maintenance" => "Bao tri",
+        "Reserved" => "Da dat truoc",
+        "Retired" => "Hong",
+        _ => string.IsNullOrWhiteSpace(status) ? "Khong ro" : status
     };
 }
-

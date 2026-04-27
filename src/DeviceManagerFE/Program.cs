@@ -44,7 +44,11 @@ builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
 builder.Services.AddScoped<ILoginPresenter, LoginPresenter>();
 builder.Services.AddScoped<IDeviceInventoryReadRepository, DeviceInventoryReadRepository>();
+builder.Services.AddScoped<IDeviceInventoryWriteRepository, DeviceInventoryWriteRepository>();
+builder.Services.AddScoped<IEmployeeDirectoryRepository, EmployeeDirectoryRepository>();
 builder.Services.AddScoped<IGetDeviceInventoryUseCase, GetDeviceInventoryUseCase>();
+builder.Services.AddScoped<ICreateDeviceUseCase, CreateDeviceUseCase>();
+builder.Services.AddScoped<IGetEmployeeDirectoryUseCase, GetEmployeeDirectoryUseCase>();
 builder.Services.AddScoped<IDeviceInventoryPresenter, DeviceInventoryPresenter>();
 
 var app = builder.Build();

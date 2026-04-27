@@ -1,0 +1,161 @@
+@page "/devices/new"
+@inherits CreateDevicePageBase
+
+<PageTitle>Them thiet bi moi</PageTitle>
+
+<main class="inventory-shell create-device-page">
+    <header class="topbar">
+        <div class="topbar-left">
+            <button type="button" class="icon-btn" title="Thong bao">
+                <span class="material-symbols-outlined">notifications</span>
+            </button>
+            <button type="button" class="icon-btn" title="Ho tro">
+                <span class="material-symbols-outlined">help</span>
+            </button>
+        </div>
+        <div class="topbar-user">
+            <div class="topbar-user-info">
+                <span class="topbar-name">@DisplayName</span>
+                <span class="topbar-role">Administrator</span>
+            </div>
+            <span class="avatar">@AvatarText</span>
+        </div>
+    </header>
+
+    <section class="device-form-shell">
+        <a class="back-link" href="/devices">
+            <span class="material-symbols-outlined">arrow_back</span>
+            <span>Quay lai danh sach</span>
+        </a>
+
+        <header class="device-form-header">
+            <div>
+                <h1>Them thiet bi moi</h1>
+                <p>Nhap chi tiet thong tin thiet bi de dua vao he thong quan ly tap trung.</p>
+            </div>
+            <div class="device-form-actions">
+                <button type="button" class="secondary-btn" @onclick="Cancel">Huy</button>
+                <button type="submit" class="primary-btn" form="create-device-form" disabled="@Submitting">
+                    @(Submitting ? "Dang luu..." : "Luu thiet bi")
+                </button>
+            </div>
+        </header>
+
+        @if (!string.IsNullOrWhiteSpace(StatusMessage))
+        {
+            <div class="status-banner @(IsError ? "error" : "ok")">@StatusMessage</div>
+        }
+
+        <EditForm EditContext="EditContext" OnValidSubmit="HandleSubmitAsync" FormName="CreateDeviceForm" id="create-device-form" method="post" class="device-form">
+            <DataAnnotationsValidator />
+
+            <section class="device-form-card">
+                <div class="card-title is-blue">Thong tin co ban</div>
+                <div class="device-form-grid two-columns">
+                    <div class="field-block">
+                        <label for="deviceCode">MA THIET BI NOI BO *</label>
+                        <InputText id="deviceCode" class="device-input" @bind-Value="Model.DeviceCode" placeholder="VD: DEV-MAC-001" />
+                        <ValidationMessage For="() => Model.DeviceCode" />
+                    </div>
+
+                    <div class="field-block">
+                        <label for="deviceName">TEN THIET BI *</label>
+                        <InputText id="deviceName" class="device-input" @bind-Value="Model.DeviceName" placeholder="VD: MacBook Pro M2 - Linh TD" />
+                        <ValidationMessage For="() => Model.DeviceName" />
+                    </div>
+
+                    <div class="field-block">
+                        <label for="categoryId">LOAI THIET BI *</label>
+                        <InputSelect id="categoryId" class="device-select" @bind-Value="Model.CategoryId">
+                            <option value="">Chon loai thiet bi</option>
+                            @foreach (var category in DeviceCategoryOptions)
+                            {
+                                <option value="@category.Value">@category.Label</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="() => Model.CategoryId" />
+                    </div>
+
+                    <div class="device-form-grid two-columns nested-grid">
+                        <div class="field-block">
+                            <label for="brand">HANG SAN XUAT</label>
+                            <InputText id="brand" class="device-input" @bind-Value="Model.Brand" placeholder="VD: Apple" />
+                            <ValidationMessage For="() => Model.Brand" />
+                        </div>
+
+                        <div class="field-block">
+                            <label for="model">MODEL</label>
+                            <InputText id="model" class="device-input" @bind-Value="Model.Model" placeholder="VD: A2779" />
+                            <ValidationMessage For="() => Model.Model" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="device-form-card">
+                <div class="card-title is-amber">Dinh danh &amp; Thoi han</div>
+                <div class="device-form-grid three-columns">
+                    <div class="field-block">
+                        <label for="serialNumber">SO SERIAL (S/N)</label>
+                        <InputText id="serialNumber" class="device-input" @bind-Value="Model.SerialNumber" placeholder="VD: C02F8000XXX" />
+                        <ValidationMessage For="() => Model.SerialNumber" />
+                    </div>
+
+                    <div class="field-block">
+                        <label for="purchaseDate">NGAY MUA</label>
+                        <InputDate id="purchaseDate" class="device-input" @bind-Value="Model.PurchaseDate" />
+                        <ValidationMessage For="() => Model.PurchaseDate" />
+                    </div>
+
+                    <div class="field-block">
+                        <label for="warrantyExpiryDate">HAN BAO HANH</label>
+                        <InputDate id="warrantyExpiryDate" class="device-input" @bind-Value="Model.WarrantyExpiryDate" />
+                        <ValidationMessage For="() => Model.WarrantyExpiryDate" />
+                    </div>
+                </div>
+            </section>
+
+            <section class="device-form-card">
+                <div class="card-title is-blue">Trang thai &amp; Su dung</div>
+                <div class="device-form-grid two-columns">
+                    <div class="field-block">
+                        <label for="status">TRANG THAI HIEN TAI</label>
+                        <InputSelect id="status" class="device-select" @bind-Value="Model.Status">
+                            @foreach (var status in DeviceStatusOptions)
+                            {
+                                <option value="@status.Value">@status.Label</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="() => Model.Status" />
+                    </div>
+
+                    <div class="field-block">
+                        <label for="employeeId">NHAN VIEN SU DUNG</label>
+                        <InputSelect id="employeeId" class="device-select" @bind-Value="Model.EmployeeId" disabled="@EmployeesLoading">
+                            <option value="">@(EmployeesLoading ? "Dang tai danh sach nhan vien..." : "Chon nhan vien (neu da ban giao)")</option>
+                            @foreach (var employee in EmployeeOptions)
+                            {
+                                <option value="@employee.EmployeeId">@employee.DisplayName</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="() => Model.EmployeeId" />
+                    </div>
+                </div>
+
+                <div class="helper-banner">
+                    <span class="material-symbols-outlined">info</span>
+                    <span>De trong neu thiet bi dang trong kho.</span>
+                </div>
+            </section>
+
+            <section class="device-form-card">
+                <div class="card-title is-blue">Khac</div>
+                <div class="field-block">
+                    <label for="note">GHI CHU</label>
+                    <InputTextArea id="note" class="device-textarea" @bind-Value="Model.Note" placeholder="Nhap cac luu y dac biet ve tinh trang thiet bi hoac cau hinh..." />
+                    <ValidationMessage For="() => Model.Note" />
+                </div>
+            </section>
+        </EditForm>
+    </section>
+</main>

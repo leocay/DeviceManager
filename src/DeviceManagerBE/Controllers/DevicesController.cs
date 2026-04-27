@@ -77,6 +77,40 @@ public class DevicesController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(CreateDeviceResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<CreateDeviceResponse>> CreateDevice(
+        [FromBody] CreateDeviceRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new CreateDeviceCommand
+        {
+            DeviceCode = request.DeviceCode,
+            DeviceName = request.DeviceName,
+            CategoryId = request.CategoryId,
+            Brand = request.Brand,
+            Model = request.Model,
+            SerialNumber = request.SerialNumber,
+            PurchaseDate = request.PurchaseDate,
+            WarrantyExpiryDate = request.WarrantyExpiryDate,
+            Status = request.Status,
+            EmployeeId = request.EmployeeId,
+            Note = request.Note
+        };
+
+        var result = await _mediator.Send(command, cancellationToken);
+
+        return StatusCode(StatusCodes.Status201Created, new CreateDeviceResponse
+        {
+            DeviceId = result.DeviceId,
+            DeviceCode = result.DeviceCode,
+            DeviceName = result.DeviceName,
+            Message = "Tao moi thiet bi thanh cong."
+        });
+    }
 }
 
 

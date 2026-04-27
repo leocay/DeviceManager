@@ -1,4 +1,4 @@
-﻿using DeviceManagerFE.Features.Devices.Application.DTOs;
+using DeviceManagerFE.Features.Devices.Application.DTOs;
 using DeviceManagerFE.Features.Devices.Application.Interfaces;
 using DeviceManagerFE.Features.Devices.Domain.ValueObjects;
 using DeviceManagerFE.Features.Devices.Presentation.Services;
@@ -28,6 +28,10 @@ public class DevicesPageBase : ComponentBase
     protected string DisplayName => string.IsNullOrWhiteSpace(AuthSessionState.FullName)
         ? "Administrator"
         : AuthSessionState.FullName;
+
+    protected string AvatarText => string.IsNullOrWhiteSpace(DisplayName)
+        ? "A"
+        : DisplayName[..1].ToUpperInvariant();
 
     protected override async Task OnInitializedAsync()
     {
@@ -112,16 +116,19 @@ public class DevicesPageBase : ComponentBase
         await LoadDevicesAsync();
     }
 
+    protected void OpenCreateDevicePage()
+        => NavigationManager.NavigateTo("/devices/new");
+
     protected string GetDisplayRangeText()
     {
         if (TotalCount == 0)
         {
-            return "0 cá»§a 0";
+            return "0 cua 0";
         }
 
         var start = ((Query.PageNumber - 1) * Query.PageSize) + 1;
         var end = Math.Min(Query.PageNumber * Query.PageSize, TotalCount);
-        return $"{start}-{end} cá»§a {TotalCount:N0}";
+        return $"{start}-{end} cua {TotalCount:N0}";
     }
 
     protected IEnumerable<int> GetVisiblePages()
@@ -160,7 +167,7 @@ public class DevicesPageBase : ComponentBase
 
             if (result is null)
             {
-                ErrorMessage = "KhÃ´ng táº£i Ä‘Æ°á»£c danh sÃ¡ch thiáº¿t bá»‹. Vui lÃ²ng Ä‘Äƒng nháº­p láº¡i.";
+                ErrorMessage = "Khong tai duoc danh sach thiet bi. Vui long dang nhap lai.";
                 return;
             }
 
@@ -171,13 +178,11 @@ public class DevicesPageBase : ComponentBase
         }
         catch
         {
-            ErrorMessage = "CÃ³ lá»—i khi táº£i danh sÃ¡ch thiáº¿t bá»‹.";
+            ErrorMessage = "Co loi khi tai danh sach thiet bi.";
         }
         finally
         {
             Loading = false;
         }
     }
-
 }
-

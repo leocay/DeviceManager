@@ -1,7 +1,7 @@
 ﻿@page "/"
 @inherits HomePageBase
 
-<PageTitle>AssetCentral - Dang nhap quan tri vien</PageTitle>
+<PageTitle>AssetCentral - Đăng nhập quản trị viên</PageTitle>
 
 <main class="login-shell">
 	<section class="login-wrapper">
@@ -12,8 +12,8 @@
 
 		<article class="login-card">
 			<header class="login-head">
-				<h2>Dang nhap</h2>
-				<p>Vui long nhap thong tin de truy cap he thong.</p>
+				<h2>Đăng nhập</h2>
+				<p>Vui lòng nhập thông tin để truy cập hệ thống.</p>
 			</header>
 
 			@if (!string.IsNullOrWhiteSpace(StatusMessage))
@@ -25,7 +25,7 @@
 				<DataAnnotationsValidator />
 
 				<div class="field-block">
-					<label for="username">TEN DANG NHAP</label>
+					<label for="username">TÊN ĐĂNG NHẬP</label>
 					<div class="input-wrap">
 						<span class="material-symbols-outlined">person</span>
 						<InputText id="username" @bind-Value="Model.Username" placeholder="admin" autocomplete="username" />
@@ -34,7 +34,7 @@
 				</div>
 
 				<div class="field-block">
-					<label for="password">MAT KHAU</label>
+					<label for="password">MẬT KHẨU</label>
 					<div class="input-wrap">
 						<span class="material-symbols-outlined">lock</span>
 						<InputText id="password" @bind-Value="Model.Password" type="password" placeholder="••••••••" autocomplete="current-password" />
@@ -44,17 +44,17 @@
 
 				<label class="remember-row" for="remember">
 					<InputCheckbox id="remember" @bind-Value="Model.RememberMe" />
-					<span>Ghi nho thiet bi nay</span>
+					<span>Ghi nhớ thiết bị này</span>
 				</label>
 
 				<button type="submit" class="login-btn" disabled="@Submitting">
-					<span>@(Submitting ? "Dang xu ly..." : "Dang nhap")</span>
+					<span>@(Submitting ? "Đang xử lý..." : "Đăng nhập")</span>
 					<span class="material-symbols-outlined">login</span>
 				</button>
 			</EditForm>
 
 			<footer class="login-foot">
-				<p>Phien ban 2.4.0 - Enterprise Edition</p>
+				<p>Phiên bản 2.4.0 - Enterprise Edition</p>
 			</footer>
 		</article>
 	</section>

@@ -10,11 +10,12 @@
         "run",
         "--project",
         "${workspaceFolder}/src/DeviceManagerBE/DeviceManagerBE.csproj",
-        "--no-build"
+        "--no-build",
+        "--launch-profile",
+        "http"
       ],
       "cwd": "${workspaceFolder}",
-      "console": "internalConsole",
-      "preLaunchTask": "build-all"
+      "console": "internalConsole"
     },
     {
       "name": "Debug Frontend Blazor",
@@ -25,7 +26,9 @@
         "run",
         "--project",
         "${workspaceFolder}/src/DeviceManagerFE/DeviceManagerFE.csproj",
-        "--no-build"
+        "--no-build",
+        "--launch-profile",
+        "http"
       ],
       "cwd": "${workspaceFolder}",
       "console": "internalConsole",
@@ -42,6 +45,7 @@
         "Debug Backend API",
         "Debug Frontend Blazor"
       ],
+      "preLaunchTask": "build-safe",
       "stopAll": true
     }
   ]
