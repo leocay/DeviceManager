@@ -73,7 +73,7 @@ public class DeviceApiClient
             return new CreateDeviceResultDto
             {
                 Success = false,
-                Message = "Phien dang nhap da het han."
+                Message = "Phiên đăng nhập đã hết hạn."
             };
         }
 
@@ -103,7 +103,7 @@ public class DeviceApiClient
             return new CreateDeviceResultDto
             {
                 Success = false,
-                Message = $"Khong ket noi duoc backend tai {_httpClient.BaseAddress}."
+                Message = $"Không kết nối được backend tại {_httpClient.BaseAddress}."
             };
         }
         catch (TaskCanceledException)
@@ -111,7 +111,7 @@ public class DeviceApiClient
             return new CreateDeviceResultDto
             {
                 Success = false,
-                Message = "Yeu cau tao thiet bi bi timeout."
+                Message = "Yêu cầu tạo thiết bị bị timeout."
             };
         }
 
@@ -122,7 +122,7 @@ public class DeviceApiClient
             return new CreateDeviceResultDto
             {
                 Success = true,
-                Message = created?.Message ?? "Tao moi thiet bi thanh cong.",
+                Message = created?.Message ?? "Tạo mới thiết bị thành công.",
                 DeviceId = created?.DeviceId
             };
         }
@@ -134,7 +134,7 @@ public class DeviceApiClient
             return new CreateDeviceResultDto
             {
                 Success = false,
-                Message = problem?.Detail ?? "Du lieu tao thiet bi khong hop le.",
+                Message = problem?.Detail ?? "Dữ liệu tạo thiết bị không hợp lệ.",
                 ValidationErrors = problem?.Errors?.ToDictionary(
                     pair => pair.Key,
                     pair => pair.Value,
@@ -145,7 +145,7 @@ public class DeviceApiClient
         return new CreateDeviceResultDto
         {
             Success = false,
-            Message = $"Tao moi thiet bi that bai. HTTP {(int)response.StatusCode}."
+            Message = $"Tạo mới thiết bị thất bại. HTTP {(int)response.StatusCode}."
         };
     }
 

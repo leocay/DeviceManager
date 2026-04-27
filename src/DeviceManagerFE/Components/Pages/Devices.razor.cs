@@ -123,12 +123,12 @@ public class DevicesPageBase : ComponentBase
     {
         if (TotalCount == 0)
         {
-            return "0 cua 0";
+            return "0 của 0";
         }
 
         var start = ((Query.PageNumber - 1) * Query.PageSize) + 1;
         var end = Math.Min(Query.PageNumber * Query.PageSize, TotalCount);
-        return $"{start}-{end} cua {TotalCount:N0}";
+        return $"{start}-{end} của {TotalCount:N0}";
     }
 
     protected IEnumerable<int> GetVisiblePages()
@@ -167,7 +167,7 @@ public class DevicesPageBase : ComponentBase
 
             if (result is null)
             {
-                ErrorMessage = "Khong tai duoc danh sach thiet bi. Vui long dang nhap lai.";
+                ErrorMessage = "Không tải được danh sách thiết bị. Vui lòng đăng nhập lại.";
                 return;
             }
 
@@ -178,7 +178,7 @@ public class DevicesPageBase : ComponentBase
         }
         catch
         {
-            ErrorMessage = "Co loi khi tai danh sach thiet bi.";
+            ErrorMessage = "Có lỗi khi tải danh sách thiết bị.";
         }
         finally
         {

@@ -5,7 +5,7 @@ public static class AuthBusinessRules
     public static string BuildLoginSuccessMessage(string? fullName)
     {
         var displayName = string.IsNullOrWhiteSpace(fullName) ? "Administrator" : fullName;
-        return $"Xin chÃ o {displayName}. ÄÄƒng nháº­p thÃ nh cÃ´ng vÃ o há»‡ thá»‘ng.";
+        return $"Xin chào {displayName}. Đăng nhập thành công vào hệ thống.";
     }
 }
 

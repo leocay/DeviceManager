@@ -24,7 +24,7 @@ public class AuthApiClient
             return new LoginResponse
             {
                 Success = false,
-                Message = $"Khong ket noi duoc backend tai {_httpClient.BaseAddress}. Hay dam bao API dang chay."
+                Message = $"Không kết nối được backend tại {_httpClient.BaseAddress}. Hãy đảm bảo API đang chạy."
             };
         }
         catch (TaskCanceledException)
@@ -32,25 +32,25 @@ public class AuthApiClient
             return new LoginResponse
             {
                 Success = false,
-                Message = "Yeu cau den backend bi timeout. Hay thu lai sau."
+                Message = "Yêu cầu đến backend bị timeout. Hãy thử lại sau."
             };
         }
 
         if (response.IsSuccessStatusCode)
         {
             var result = await response.Content.ReadFromJsonAsync<LoginResponse>(cancellationToken: cancellationToken);
-            return result ?? new LoginResponse { Success = false, Message = "Phan hoi tu API khong hop le." };
+            return result ?? new LoginResponse { Success = false, Message = "Phản hồi từ API không hợp lệ." };
         }
 
         if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
-            return new LoginResponse { Success = false, Message = "Sai ten dang nhap hoac mat khau." };
+            return new LoginResponse { Success = false, Message = "Sai tên đăng nhập hoặc mật khẩu." };
         }
 
         return new LoginResponse
         {
             Success = false,
-            Message = $"Dang nhap that bai. HTTP {(int)response.StatusCode}."
+            Message = $"Đăng nhập thất bại. HTTP {(int)response.StatusCode}."
         };
     }
 }

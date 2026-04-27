@@ -7,7 +7,7 @@ public sealed class DeviceInventoryPresenter : IDeviceInventoryPresenter
 {
     private static readonly IReadOnlyList<FilterOptionViewModel> CategoryFilterOptions =
     [
-        new(string.Empty, "Tat ca"),
+        new(string.Empty, "Tất cả"),
         new("1", "Laptop"),
         new("2", "Desktop"),
         new("3", "Monitor"),
@@ -32,12 +32,12 @@ public sealed class DeviceInventoryPresenter : IDeviceInventoryPresenter
 
     private static readonly IReadOnlyList<FilterOptionViewModel> StatusFilterOptions =
     [
-        new(string.Empty, "Tat ca"),
-        new("Available", "Moi"),
-        new("In Use", "Dang su dung"),
-        new("Maintenance", "Bao tri"),
-        new("Reserved", "Da dat truoc"),
-        new("Retired", "Hong")
+        new(string.Empty, "Tất cả"),
+        new("Available", "Mới"),
+        new("In Use", "Đang sử dụng"),
+        new("Maintenance", "Bảo trì"),
+        new("Reserved", "Đã đặt trước"),
+        new("Retired", "Hỏng")
     ];
 
     public IReadOnlyList<FilterOptionViewModel> CategoryOptions => CategoryFilterOptions;
@@ -66,11 +66,11 @@ public sealed class DeviceInventoryPresenter : IDeviceInventoryPresenter
 
     private static string ToStatusCssClass(string statusLabel) => statusLabel switch
     {
-        "Moi" => "is-new",
-        "Dang su dung" => "is-active",
-        "Bao tri" => "is-maintenance",
-        "Da dat truoc" => "is-reserved",
-        "Hong" => "is-retired",
+        "Mới" => "is-new",
+        "Đang sử dụng" => "is-active",
+        "Bảo trì" => "is-maintenance",
+        "Đã đặt trước" => "is-reserved",
+        "Hỏng" => "is-retired",
         _ => "is-default"
     };
 }

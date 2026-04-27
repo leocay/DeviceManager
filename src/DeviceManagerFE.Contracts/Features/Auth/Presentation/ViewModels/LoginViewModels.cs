@@ -2,10 +2,10 @@
 
 public sealed class LoginFormViewModel
 {
-    [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "TÃªn Ä‘Äƒng nháº­p lÃ  báº¯t buá»™c.")]
+    [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Tên đăng nhập là bắt buộc.")]
     public string Username { get; set; } = string.Empty;
 
-    [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Máº­t kháº©u lÃ  báº¯t buá»™c.")]
+    [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Mật khẩu là bắt buộc.")]
     public string Password { get; set; } = string.Empty;
 
     public bool RememberMe { get; set; }

@@ -11,16 +11,16 @@ public static class DeviceBusinessRules
             return $"{device.Brand} {device.Model}";
         }
 
-        return "Thiet bi cong nghe";
+        return "Thiết bị công nghệ";
     }
 
     public static string ToLocalizedStatus(string? status) => status switch
     {
-        "Available" => "Moi",
-        "In Use" => "Dang su dung",
-        "Maintenance" => "Bao tri",
-        "Reserved" => "Da dat truoc",
-        "Retired" => "Hong",
-        _ => string.IsNullOrWhiteSpace(status) ? "Khong ro" : status
+        "Available" => "Mới",
+        "In Use" => "Đang sử dụng",
+        "Maintenance" => "Bảo trì",
+        "Reserved" => "Đã đặt trước",
+        "Retired" => "Hỏng",
+        _ => string.IsNullOrWhiteSpace(status) ? "Không rõ" : status
     };
 }

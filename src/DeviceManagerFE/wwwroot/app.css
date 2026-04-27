@@ -1,4 +1,6 @@
-:root {
+﻿:root {
+    --page-content-max-width: 1240px;
+    --page-hero-min-height: 108px;
     --on-surface: #191c1e;
     --on-primary: #ffffff;
     --surface: #f7f9fb;
@@ -24,9 +26,17 @@ html,
 body {
     margin: 0;
     min-height: 100%;
-    font-family: Inter, sans-serif;
+    font-family: "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scrollbar-gutter: stable;
     color: var(--on-surface);
     background: var(--surface);
+}
+
+html {
+    overflow-y: scroll;
 }
 
 .material-symbols-outlined {
@@ -59,7 +69,7 @@ body {
 
 .brand-title {
     margin: 0;
-    font-family: Manrope, sans-serif;
+    font-family: "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
     font-size: 2rem;
     font-weight: 800;
     letter-spacing: -0.02em;
@@ -86,7 +96,7 @@ body {
 
 .login-head h2 {
     margin: 0;
-    font-family: Manrope, sans-serif;
+    font-family: "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
     font-size: 1.4rem;
 }
 
@@ -189,7 +199,7 @@ body {
     border-radius: 999px;
     padding: 14px 20px;
     color: var(--on-primary);
-    font-family: Manrope, sans-serif;
+    font-family: "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
     font-weight: 800;
     font-size: 0.95rem;
     display: flex;
@@ -352,9 +362,67 @@ body {
 }
 
 .inventory-wrapper {
-    max-width: 1240px;
+    max-width: var(--page-content-max-width);
     margin: 0 auto;
     background: transparent;
+}
+
+.page-top-row {
+    min-height: 31px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.page-top-row > .back-link {
+    min-height: 31px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.page-top-row-placeholder {
+    height: 31px;
+    min-height: 31px;
+    display: block;
+}
+
+.page-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    min-height: var(--page-hero-min-height);
+    margin-bottom: 18px;
+}
+
+.page-hero-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: var(--page-hero-min-height);
+}
+
+.page-hero-actions {
+    min-height: var(--page-hero-min-height);
+    display: inline-flex;
+    align-items: center;
+}
+
+.page-title {
+    margin-bottom: 18px;
+    font-family: "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+    font-size: 2rem;
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.page-subtitle {
+    margin: 6px 0 0;
+    font-size: 1rem;
+    line-height: 1.35;
+    color: #5b6880;
 }
 
 .inventory-header {
@@ -363,18 +431,6 @@ body {
     align-items: flex-start;
     gap: 16px;
     margin-bottom: 18px;
-}
-
-.inventory-header h1 {
-    margin: 0;
-    font-family: Manrope, sans-serif;
-    font-size: 2rem;
-    letter-spacing: -0.02em;
-}
-
-.inventory-header p {
-    margin: 6px 0 0;
-    color: #5b6880;
 }
 
 .add-device-btn {
@@ -645,10 +701,24 @@ body {
         padding: 0 14px;
     }
 
+    .page-top-row {
+        min-height: 27px;
+        margin-bottom: 14px;
+    }
+
     .inventory-header,
     .inventory-filters {
         flex-direction: column;
         align-items: stretch;
+    }
+
+    .inventory-header,
+    .inventory-header > div:first-child {
+        min-height: unset;
+    }
+
+    .inventory-wrapper::before {
+        height: 27px;
     }
 
     .inventory-header h1 {
@@ -668,7 +738,7 @@ body {
 }
 
 .device-form-shell {
-    max-width: 960px;
+    max-width: var(--page-content-max-width);
     margin: 0 auto;
     padding-bottom: 28px;
 }
@@ -683,7 +753,6 @@ body {
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    margin-bottom: 18px;
 }
 
 .back-link .material-symbols-outlined {
@@ -695,12 +764,20 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     gap: 16px;
+    min-height: var(--page-hero-min-height);
     margin-bottom: 18px;
+}
+
+.inventory-header > div:first-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: var(--page-hero-min-height);
 }
 
 .device-form-header h1 {
     margin: 0;
-    font-family: Manrope, sans-serif;
+    font-family: "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
     font-size: 2.3rem;
     letter-spacing: -0.03em;
 }
@@ -769,7 +846,7 @@ body {
     position: relative;
     margin-bottom: 18px;
     padding-left: 14px;
-    font-family: Manrope, sans-serif;
+    font-family: "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
     font-size: 1.1rem;
     font-weight: 800;
 }
@@ -917,7 +994,7 @@ body {
 }
 
 .create-device-page .device-form-shell {
-    max-width: 960px;
+    max-width: var(--page-content-max-width);
     margin: 0 auto;
     padding-bottom: 28px;
 }
@@ -944,20 +1021,13 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     gap: 16px;
+    min-height: var(--page-hero-min-height);
     margin-bottom: 18px;
 }
 
-.create-device-page .device-form-header h1 {
-    margin: 0;
-    font-family: Manrope, sans-serif;
-    font-size: 2.3rem;
-    letter-spacing: -0.03em;
-}
-
-.create-device-page .device-form-header p {
-    margin: 8px 0 0;
-    max-width: 520px;
-    color: #65738a;
+.create-device-page .page-subtitle {
+    max-width: none;
+    white-space: nowrap;
 }
 
 .create-device-page .device-form-actions {
@@ -1013,7 +1083,7 @@ body {
     position: relative;
     margin-bottom: 18px;
     padding-left: 14px;
-    font-family: Manrope, sans-serif;
+    font-family: "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
     font-size: 1.1rem;
     font-weight: 800;
 }
@@ -1133,6 +1203,15 @@ body {
         flex-direction: column;
     }
 
+    .create-device-page .device-form-header,
+    .create-device-page .device-form-header > div:first-child {
+        min-height: unset;
+    }
+
+    .create-device-page .device-form-header p {
+        white-space: normal;
+    }
+
     .create-device-page .device-form-actions {
         width: 100%;
     }
@@ -1148,3 +1227,280 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* Lock shared page layout so both screens render on the same frame. */
+.page-layout {
+    max-width: var(--page-content-max-width);
+    margin: 0 auto;
+    padding-bottom: 28px;
+}
+
+.page-layout .page-hero-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    column-gap: 16px;
+    margin: 0 0 18px;
+}
+
+.page-layout .page-hero-main {
+    display: grid;
+    grid-template-rows: 31px auto;
+    row-gap: 18px;
+}
+
+.page-layout .page-top-row {
+    min-height: 31px;
+    display: flex;
+    align-items: center;
+}
+
+.page-layout .page-top-row > .back-link {
+    min-height: 31px;
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+}
+
+.page-layout .page-hero-copy {
+    min-height: var(--page-hero-min-height);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.page-layout .page-hero-actions {
+    min-height: calc(31px + 18px + var(--page-hero-min-height));
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.page-layout .page-title {
+    margin: 0;
+    font-family: "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+    font-size: 2rem;
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.page-layout .page-subtitle {
+    margin: 6px 0 0;
+    font-size: 1rem;
+    line-height: 1.35;
+    color: #5b6880;
+    white-space: nowrap;
+    max-width: none;
+}
+
+.page-layout .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #315ac7;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0;
+}
+
+.page-layout .back-link .material-symbols-outlined {
+    font-size: 18px;
+}
+
+.page-layout .page-top-row-placeholder {
+    height: 31px;
+    min-height: 31px;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .page-layout .page-top-row {
+        min-height: 27px;
+    }
+
+    .page-layout .page-top-row > .back-link {
+        min-height: 27px;
+    }
+
+    .page-layout .page-top-row-placeholder {
+        height: 27px;
+        min-height: 27px;
+    }
+
+    .page-layout .page-hero-shell {
+        grid-template-columns: 1fr;
+        row-gap: 14px;
+    }
+
+    .page-layout .page-hero-main {
+        grid-template-rows: 27px auto;
+        row-gap: 14px;
+    }
+
+    .page-layout .page-hero-copy,
+    .page-layout .page-hero-actions {
+        min-height: unset;
+    }
+
+    .page-layout .page-subtitle {
+        white-space: normal;
+    }
+}
+
+/* Final override: neutralize legacy page-specific header rules. */
+.page-layout .page-top-row,
+.page-layout .page-top-row-placeholder {
+    height: 31px;
+    min-height: 31px;
+    max-height: 31px;
+}
+
+.page-layout .page-top-row > .back-link,
+.create-device-page .page-layout .back-link {
+    height: 31px;
+    min-height: 31px;
+    max-height: 31px;
+    margin: 0 !important;
+}
+
+.page-layout .page-hero-copy {
+    min-height: var(--page-hero-min-height);
+}
+
+.page-layout .page-title {
+    margin: 0;
+    line-height: 1.15;
+}
+
+.page-layout .page-subtitle {
+    margin: 6px 0 0;
+}
+
+@media (max-width: 768px) {
+    .page-layout .page-top-row,
+    .page-layout .page-top-row-placeholder {
+        height: 27px;
+        min-height: 27px;
+        max-height: 27px;
+    }
+
+    .page-layout .page-top-row > .back-link,
+    .create-device-page .page-layout .back-link {
+        height: 27px;
+        min-height: 27px;
+        max-height: 27px;
+    }
+}
+
+/* Single shared header layout for Devices/CreateDevice pages. */
+.page-layout .strict-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 16px;
+    align-items: start;
+    margin: 0 0 18px;
+}
+
+.page-layout .strict-header-main {
+    display: grid;
+    grid-template-rows: 31px auto;
+    row-gap: 18px;
+}
+
+.page-layout .strict-header-row,
+.page-layout .strict-header-row-placeholder {
+    height: 31px;
+    min-height: 31px;
+    max-height: 31px;
+    display: flex;
+    align-items: center;
+}
+
+.page-layout .strict-header-row-placeholder {
+    display: block;
+}
+
+.page-layout .strict-back-link {
+    height: 31px;
+    min-height: 31px;
+    max-height: 31px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    color: #315ac7;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.page-layout .strict-back-link .material-symbols-outlined {
+    font-size: 18px;
+}
+
+.page-layout .strict-header-copy {
+    min-height: var(--page-hero-min-height);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.page-layout .strict-title {
+    margin: 0;
+    font-family: "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+    font-size: 2rem;
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.page-layout .strict-subtitle {
+    margin: 6px 0 0;
+    font-size: 1rem;
+    line-height: 1.35;
+    color: #5b6880;
+    white-space: nowrap;
+}
+
+.page-layout .strict-header-actions {
+    min-height: calc(31px + 18px + var(--page-hero-min-height));
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+    .page-layout .strict-header {
+        grid-template-columns: 1fr;
+        row-gap: 14px;
+    }
+
+    .page-layout .strict-header-main {
+        grid-template-rows: 27px auto;
+        row-gap: 14px;
+    }
+
+    .page-layout .strict-header-row,
+    .page-layout .strict-header-row-placeholder,
+    .page-layout .strict-back-link {
+        height: 27px;
+        min-height: 27px;
+        max-height: 27px;
+    }
+
+    .page-layout .strict-header-copy,
+    .page-layout .strict-header-actions {
+        min-height: unset;
+    }
+
+    .page-layout .strict-subtitle {
+        white-space: normal;
+    }
+}
+
