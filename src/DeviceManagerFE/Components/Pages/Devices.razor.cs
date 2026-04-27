@@ -119,6 +119,9 @@ public class DevicesPageBase : ComponentBase
     protected void OpenCreateDevicePage()
         => NavigationManager.NavigateTo("/devices/new");
 
+    protected void OpenEditDevicePage(int deviceId)
+        => NavigationManager.NavigateTo($"/devices/{deviceId}/edit");
+
     protected string GetDisplayRangeText()
     {
         if (TotalCount == 0)

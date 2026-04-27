@@ -7,4 +7,9 @@ public interface IDeviceInventoryWriteRepository
     Task<CreateDeviceResultDto> CreateDeviceAsync(
         CreateDeviceRequestDto request,
         CancellationToken cancellationToken = default);
+
+    Task<CreateDeviceResultDto> UpdateDeviceAsync(
+        int deviceId,
+        CreateDeviceRequestDto request,
+        CancellationToken cancellationToken = default);
 }

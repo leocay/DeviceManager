@@ -1,7 +1,8 @@
 @page "/devices/new"
+@page "/devices/{DeviceId:int}/edit"
 @inherits CreateDevicePageBase
 
-<PageTitle>Thêm thiết bị mới</PageTitle>
+<PageTitle>@BrowserPageTitle</PageTitle>
 
 <main class="inventory-shell create-device-page">
     <header class="topbar">
@@ -32,14 +33,14 @@
                     </a>
                 </div>
                 <div class="strict-header-copy">
-                    <h1 class="strict-title">Thêm thiết bị mới</h1>
-                    <p class="strict-subtitle">Nhập chi tiết thông tin thiết bị để đưa vào hệ thống quản lý tập trung.</p>
+                    <h1 class="strict-title">@PageHeading</h1>
+                    <p class="strict-subtitle">@PageDescription</p>
                 </div>
             </div>
             <div class="strict-header-actions device-form-actions">
                 <button type="button" class="secondary-btn" @onclick="Cancel">Hủy</button>
                 <button type="submit" class="primary-btn" form="create-device-form" disabled="@Submitting">
-                    @(Submitting ? "Đang lưu..." : "Lưu thiết bị")
+                    @(Submitting ? "Đang lưu..." : SaveButtonText)
                 </button>
             </div>
         </header>
@@ -49,116 +50,123 @@
             <div class="status-banner @(IsError ? "error" : "ok")">@StatusMessage</div>
         }
 
-        <EditForm EditContext="EditContext" OnValidSubmit="HandleSubmitAsync" FormName="CreateDeviceForm" id="create-device-form" method="post" class="device-form">
-            <DataAnnotationsValidator />
+        @if (PageLoading)
+        {
+            <p>Đang tải thông tin thiết bị...</p>
+        }
+        else
+        {
+            <EditForm EditContext="EditContext" OnValidSubmit="HandleSubmitAsync" FormName="CreateDeviceForm" id="create-device-form" method="post" class="device-form">
+                <DataAnnotationsValidator />
 
-            <section class="device-form-card">
-                <div class="card-title is-blue">Thông tin cơ bản</div>
-                <div class="device-form-grid two-columns">
-                    <div class="field-block">
-                        <label for="deviceCode">MÃ THIẾT BỊ NỘI BỘ *</label>
-                        <InputText id="deviceCode" class="device-input" @bind-Value="Model.DeviceCode" placeholder="VD: DEV-MAC-001" />
-                        <ValidationMessage For="() => Model.DeviceCode" />
-                    </div>
-
-                    <div class="field-block">
-                        <label for="deviceName">TÊN THIẾT BỊ *</label>
-                        <InputText id="deviceName" class="device-input" @bind-Value="Model.DeviceName" placeholder="VD: MacBook Pro M2 - Linh TD" />
-                        <ValidationMessage For="() => Model.DeviceName" />
-                    </div>
-
-                    <div class="field-block">
-                        <label for="categoryId">LOẠI THIẾT BỊ *</label>
-                        <InputSelect id="categoryId" class="device-select" @bind-Value="Model.CategoryId">
-                            <option value="">Chọn loại thiết bị</option>
-                            @foreach (var category in DeviceCategoryOptions)
-                            {
-                                <option value="@category.Value">@category.Label</option>
-                            }
-                        </InputSelect>
-                        <ValidationMessage For="() => Model.CategoryId" />
-                    </div>
-
-                    <div class="device-form-grid two-columns nested-grid">
+                <section class="device-form-card">
+                    <div class="card-title is-blue">Thông tin cơ bản</div>
+                    <div class="device-form-grid two-columns">
                         <div class="field-block">
-                            <label for="brand">HÃNG SẢN XUẤT</label>
-                            <InputText id="brand" class="device-input" @bind-Value="Model.Brand" placeholder="VD: Apple" />
-                            <ValidationMessage For="() => Model.Brand" />
+                            <label for="deviceCode">MÃ THIẾT BỊ NỘI BỘ *</label>
+                            <InputText id="deviceCode" class="device-input" @bind-Value="Model.DeviceCode" placeholder="VD: DEV-MAC-001" />
+                            <ValidationMessage For="() => Model.DeviceCode" />
                         </div>
 
                         <div class="field-block">
-                            <label for="model">MODEL</label>
-                            <InputText id="model" class="device-input" @bind-Value="Model.Model" placeholder="VD: A2779" />
-                            <ValidationMessage For="() => Model.Model" />
+                            <label for="deviceName">TÊN THIẾT BỊ *</label>
+                            <InputText id="deviceName" class="device-input" @bind-Value="Model.DeviceName" placeholder="VD: MacBook Pro M2 - Linh TD" />
+                            <ValidationMessage For="() => Model.DeviceName" />
+                        </div>
+
+                        <div class="field-block">
+                            <label for="categoryId">LOẠI THIẾT BỊ *</label>
+                            <InputSelect id="categoryId" class="device-select" @bind-Value="Model.CategoryId">
+                                <option value="">Chọn loại thiết bị</option>
+                                @foreach (var category in DeviceCategoryOptions)
+                                {
+                                    <option value="@category.Value">@category.Label</option>
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="() => Model.CategoryId" />
+                        </div>
+
+                        <div class="device-form-grid two-columns nested-grid">
+                            <div class="field-block">
+                                <label for="brand">HÃNG SẢN XUẤT</label>
+                                <InputText id="brand" class="device-input" @bind-Value="Model.Brand" placeholder="VD: Apple" />
+                                <ValidationMessage For="() => Model.Brand" />
+                            </div>
+
+                            <div class="field-block">
+                                <label for="model">MODEL</label>
+                                <InputText id="model" class="device-input" @bind-Value="Model.Model" placeholder="VD: A2779" />
+                                <ValidationMessage For="() => Model.Model" />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <section class="device-form-card">
-                <div class="card-title is-amber">Định danh &amp; Thời hạn</div>
-                <div class="device-form-grid three-columns">
-                    <div class="field-block">
-                        <label for="serialNumber">SỐ SERIAL (S/N)</label>
-                        <InputText id="serialNumber" class="device-input" @bind-Value="Model.SerialNumber" placeholder="VD: C02F8000XXX" />
-                        <ValidationMessage For="() => Model.SerialNumber" />
+                <section class="device-form-card">
+                    <div class="card-title is-amber">Định danh &amp; Thời hạn</div>
+                    <div class="device-form-grid three-columns">
+                        <div class="field-block">
+                            <label for="serialNumber">SỐ SERIAL (S/N)</label>
+                            <InputText id="serialNumber" class="device-input" @bind-Value="Model.SerialNumber" placeholder="VD: C02F8000XXX" />
+                            <ValidationMessage For="() => Model.SerialNumber" />
+                        </div>
+
+                        <div class="field-block">
+                            <label for="purchaseDate">NGÀY MUA</label>
+                            <InputDate id="purchaseDate" class="device-input" @bind-Value="Model.PurchaseDate" />
+                            <ValidationMessage For="() => Model.PurchaseDate" />
+                        </div>
+
+                        <div class="field-block">
+                            <label for="warrantyExpiryDate">HẠN BẢO HÀNH</label>
+                            <InputDate id="warrantyExpiryDate" class="device-input" @bind-Value="Model.WarrantyExpiryDate" />
+                            <ValidationMessage For="() => Model.WarrantyExpiryDate" />
+                        </div>
+                    </div>
+                </section>
+
+                <section class="device-form-card">
+                    <div class="card-title is-blue">Trạng thái &amp; Sử dụng</div>
+                    <div class="device-form-grid two-columns">
+                        <div class="field-block">
+                            <label for="status">TRẠNG THÁI HIỆN TẠI</label>
+                            <InputSelect id="status" class="device-select" @bind-Value="Model.Status">
+                                @foreach (var status in DeviceStatusOptions)
+                                {
+                                    <option value="@status.Value">@status.Label</option>
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="() => Model.Status" />
+                        </div>
+
+                        <div class="field-block">
+                            <label for="employeeId">NHÂN VIÊN SỬ DỤNG</label>
+                            <InputSelect id="employeeId" class="device-select" @bind-Value="Model.EmployeeId" disabled="@EmployeesLoading">
+                                <option value="">@(EmployeesLoading ? "Đang tải danh sách nhân viên..." : "Chọn nhân viên (nếu đã bàn giao)")</option>
+                                @foreach (var employee in EmployeeOptions)
+                                {
+                                    <option value="@employee.EmployeeId">@employee.DisplayName</option>
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="() => Model.EmployeeId" />
+                        </div>
                     </div>
 
-                    <div class="field-block">
-                        <label for="purchaseDate">NGÀY MUA</label>
-                        <InputDate id="purchaseDate" class="device-input" @bind-Value="Model.PurchaseDate" />
-                        <ValidationMessage For="() => Model.PurchaseDate" />
+                    <div class="helper-banner">
+                        <span class="material-symbols-outlined">info</span>
+                        <span>Để trống nếu thiết bị đang trong kho.</span>
                     </div>
+                </section>
 
+                <section class="device-form-card">
+                    <div class="card-title is-blue">Khác</div>
                     <div class="field-block">
-                        <label for="warrantyExpiryDate">HẠN BẢO HÀNH</label>
-                        <InputDate id="warrantyExpiryDate" class="device-input" @bind-Value="Model.WarrantyExpiryDate" />
-                        <ValidationMessage For="() => Model.WarrantyExpiryDate" />
+                        <label for="note">GHI CHÚ</label>
+                        <InputTextArea id="note" class="device-textarea" @bind-Value="Model.Note" placeholder="Nhập các lưu ý đặc biệt về tình trạng thiết bị hoặc cấu hình..." />
+                        <ValidationMessage For="() => Model.Note" />
                     </div>
-                </div>
-            </section>
-
-            <section class="device-form-card">
-                <div class="card-title is-blue">Trạng thái &amp; Sử dụng</div>
-                <div class="device-form-grid two-columns">
-                    <div class="field-block">
-                        <label for="status">TRẠNG THÁI HIỆN TẠI</label>
-                        <InputSelect id="status" class="device-select" @bind-Value="Model.Status">
-                            @foreach (var status in DeviceStatusOptions)
-                            {
-                                <option value="@status.Value">@status.Label</option>
-                            }
-                        </InputSelect>
-                        <ValidationMessage For="() => Model.Status" />
-                    </div>
-
-                    <div class="field-block">
-                        <label for="employeeId">NHÂN VIÊN SỬ DỤNG</label>
-                        <InputSelect id="employeeId" class="device-select" @bind-Value="Model.EmployeeId" disabled="@EmployeesLoading">
-                            <option value="">@(EmployeesLoading ? "Đang tải danh sách nhân viên..." : "Chọn nhân viên (nếu đã bàn giao)")</option>
-                            @foreach (var employee in EmployeeOptions)
-                            {
-                                <option value="@employee.EmployeeId">@employee.DisplayName</option>
-                            }
-                        </InputSelect>
-                        <ValidationMessage For="() => Model.EmployeeId" />
-                    </div>
-                </div>
-
-                <div class="helper-banner">
-                    <span class="material-symbols-outlined">info</span>
-                    <span>Để trống nếu thiết bị đang trong kho.</span>
-                </div>
-            </section>
-
-            <section class="device-form-card">
-                <div class="card-title is-blue">Khác</div>
-                <div class="field-block">
-                    <label for="note">GHI CHÚ</label>
-                    <InputTextArea id="note" class="device-textarea" @bind-Value="Model.Note" placeholder="Nhập các lưu ý đặc biệt về tình trạng thiết bị hoặc cấu hình..." />
-                    <ValidationMessage For="() => Model.Note" />
-                </div>
-            </section>
-        </EditForm>
+                </section>
+            </EditForm>
+        }
     </section>
 </main>

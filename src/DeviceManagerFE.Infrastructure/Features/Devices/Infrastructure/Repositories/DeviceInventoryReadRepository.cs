@@ -1,4 +1,5 @@
-﻿using DeviceManagerFE.Features.Devices.Application.Interfaces;
+using DeviceManagerFE.Features.Devices.Application.DTOs;
+using DeviceManagerFE.Features.Devices.Application.Interfaces;
 using DeviceManagerFE.Features.Devices.Domain.Entities;
 using DeviceManagerFE.Features.Devices.Domain.ValueObjects;
 using DeviceManagerFE.Services;
@@ -51,5 +52,9 @@ public sealed class DeviceInventoryReadRepository : IDeviceInventoryReadReposito
             TotalPages = response.TotalPages
         };
     }
-}
 
+    public Task<DeviceEditorDto?> GetDeviceByIdAsync(
+        int deviceId,
+        CancellationToken cancellationToken = default)
+        => _deviceApiClient.GetDeviceByIdAsync(deviceId, cancellationToken);
+}

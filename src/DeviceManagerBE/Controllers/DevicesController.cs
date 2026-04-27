@@ -78,6 +78,39 @@ public class DevicesController : ControllerBase
         return Ok(response);
     }
 
+    [HttpGet("{deviceId:int}")]
+    [ProducesResponseType(typeof(GetDeviceDetailResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<GetDeviceDetailResponse>> GetDeviceById(
+        int deviceId,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await _mediator.Send(new GetDeviceByIdQuery(deviceId), cancellationToken);
+
+        if (result is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(new GetDeviceDetailResponse
+        {
+            DeviceId = result.DeviceId,
+            DeviceCode = result.DeviceCode,
+            DeviceName = result.DeviceName,
+            CategoryId = result.CategoryId,
+            CategoryName = result.CategoryName,
+            EmployeeId = result.EmployeeId,
+            Brand = result.Brand,
+            Model = result.Model,
+            SerialNumber = result.SerialNumber,
+            PurchaseDate = result.PurchaseDate,
+            WarrantyExpiryDate = result.WarrantyExpiryDate,
+            Status = result.Status,
+            Note = result.Note
+        });
+    }
+
     [HttpPost]
     [ProducesResponseType(typeof(CreateDeviceResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -109,6 +142,49 @@ public class DevicesController : ControllerBase
             DeviceCode = result.DeviceCode,
             DeviceName = result.DeviceName,
             Message = "Tao moi thiet bi thanh cong."
+        });
+    }
+
+    [HttpPut("{deviceId:int}")]
+    [ProducesResponseType(typeof(UpdateDeviceResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UpdateDeviceResponse>> UpdateDevice(
+        int deviceId,
+        [FromBody] UpdateDeviceRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var existing = await _mediator.Send(new GetDeviceByIdQuery(deviceId), cancellationToken);
+        if (existing is null)
+        {
+            return NotFound();
+        }
+
+        var command = new UpdateDeviceCommand
+        {
+            DeviceId = deviceId,
+            DeviceCode = request.DeviceCode,
+            DeviceName = request.DeviceName,
+            CategoryId = request.CategoryId,
+            Brand = request.Brand,
+            Model = request.Model,
+            SerialNumber = request.SerialNumber,
+            PurchaseDate = request.PurchaseDate,
+            WarrantyExpiryDate = request.WarrantyExpiryDate,
+            Status = request.Status,
+            EmployeeId = request.EmployeeId,
+            Note = request.Note
+        };
+
+        var result = await _mediator.Send(command, cancellationToken);
+
+        return Ok(new UpdateDeviceResponse
+        {
+            DeviceId = result.DeviceId,
+            DeviceCode = result.DeviceCode,
+            DeviceName = result.DeviceName,
+            Message = "Cap nhat thiet bi thanh cong."
         });
     }
 }

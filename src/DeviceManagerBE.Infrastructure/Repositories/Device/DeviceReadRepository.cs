@@ -83,5 +83,32 @@ public class DeviceReadRepository : IDeviceReadRepository
             HasNextPage = hasNextPage
         };
     }
+
+    public async Task<DeviceDetailDto?> GetByIdAsync(
+        int deviceId,
+        CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Devices
+            .Include(d => d.Category)
+            .AsNoTracking()
+            .Where(d => d.DeviceId == deviceId)
+            .Select(d => new DeviceDetailDto
+            {
+                DeviceId = d.DeviceId,
+                DeviceCode = d.DeviceCode,
+                DeviceName = d.DeviceName,
+                CategoryId = d.CategoryId,
+                CategoryName = d.Category != null ? d.Category.CategoryName : string.Empty,
+                EmployeeId = d.EmployeeId,
+                Brand = d.Brand,
+                Model = d.Model,
+                SerialNumber = d.SerialNumber,
+                PurchaseDate = d.PurchaseDate,
+                WarrantyExpiryDate = d.WarrantyExpiryDate,
+                Status = d.Status,
+                Note = d.Note
+            })
+            .FirstOrDefaultAsync(cancellationToken);
+    }
 }
 

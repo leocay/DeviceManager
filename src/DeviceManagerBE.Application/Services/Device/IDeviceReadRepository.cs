@@ -11,5 +11,9 @@ public interface IDeviceReadRepository
         int pageNumber,
         int pageSize,
         CancellationToken cancellationToken = default);
+
+    Task<DeviceDetailDto?> GetByIdAsync(
+        int deviceId,
+        CancellationToken cancellationToken = default);
 }
 

@@ -48,6 +48,8 @@ builder.Services.AddScoped<IDeviceInventoryWriteRepository, DeviceInventoryWrite
 builder.Services.AddScoped<IEmployeeDirectoryRepository, EmployeeDirectoryRepository>();
 builder.Services.AddScoped<IGetDeviceInventoryUseCase, GetDeviceInventoryUseCase>();
 builder.Services.AddScoped<ICreateDeviceUseCase, CreateDeviceUseCase>();
+builder.Services.AddScoped<IUpdateDeviceUseCase, UpdateDeviceUseCase>();
+builder.Services.AddScoped<IGetDeviceDetailUseCase, GetDeviceDetailUseCase>();
 builder.Services.AddScoped<IGetEmployeeDirectoryUseCase, GetEmployeeDirectoryUseCase>();
 builder.Services.AddScoped<IDeviceInventoryPresenter, DeviceInventoryPresenter>();
 

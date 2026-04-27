@@ -11,10 +11,14 @@ namespace DeviceManagerFE.Components.Pages;
 public class CreateDevicePageBase : ComponentBase
 {
     [Inject] protected ICreateDeviceUseCase CreateDeviceUseCase { get; set; } = default!;
+    [Inject] protected IUpdateDeviceUseCase UpdateDeviceUseCase { get; set; } = default!;
+    [Inject] protected IGetDeviceDetailUseCase GetDeviceDetailUseCase { get; set; } = default!;
     [Inject] protected IGetEmployeeDirectoryUseCase GetEmployeeDirectoryUseCase { get; set; } = default!;
     [Inject] protected IDeviceInventoryPresenter DeviceInventoryPresenter { get; set; } = default!;
     [Inject] protected AuthSessionState AuthSessionState { get; set; } = default!;
     [Inject] protected NavigationManager NavigationManager { get; set; } = default!;
+
+    [Parameter] public int? DeviceId { get; set; }
 
     [SupplyParameterFromForm(FormName = "CreateDeviceForm")]
     protected CreateDeviceFormViewModel Model { get; set; } = new();
@@ -23,8 +27,16 @@ public class CreateDevicePageBase : ComponentBase
     protected ValidationMessageStore ValidationMessageStore { get; private set; } = default!;
     protected bool Submitting { get; private set; }
     protected bool EmployeesLoading { get; private set; }
+    protected bool PageLoading { get; private set; }
     protected string? StatusMessage { get; private set; }
     protected bool IsError { get; private set; }
+    protected bool IsEditMode => DeviceId.HasValue;
+    protected string PageHeading => IsEditMode ? "Chỉnh sửa thiết bị" : "Thêm thiết bị mới";
+    protected string PageDescription => IsEditMode
+        ? "Cập nhật thông tin thiết bị trong hệ thống quản lý tập trung."
+        : "Nhập chi tiết thông tin thiết bị để đưa vào hệ thống quản lý tập trung.";
+    protected string SaveButtonText => IsEditMode ? "Lưu thay đổi" : "Lưu thiết bị";
+    protected string BrowserPageTitle => PageHeading;
     protected IReadOnlyList<FilterOptionViewModel> DeviceCategoryOptions => DeviceInventoryPresenter.CategoryOptions.Where(option => !string.IsNullOrWhiteSpace(option.Value)).ToList();
     protected IReadOnlyList<FilterOptionViewModel> DeviceStatusOptions => DeviceInventoryPresenter.StatusOptions.Where(option => !string.IsNullOrWhiteSpace(option.Value)).ToList();
     protected IReadOnlyList<EmployeeOptionDto> EmployeeOptions { get; private set; } = [];
@@ -39,19 +51,36 @@ public class CreateDevicePageBase : ComponentBase
             return;
         }
 
-        EditContext = new EditContext(Model);
-        ValidationMessageStore = new ValidationMessageStore(EditContext);
-        EditContext.OnValidationRequested += (_, _) => ValidationMessageStore.Clear();
-        EditContext.OnFieldChanged += (_, _) => ClearStatus();
-
         EmployeesLoading = true;
+        PageLoading = true;
+
         try
         {
             EmployeeOptions = await GetEmployeeDirectoryUseCase.ExecuteAsync();
+
+            if (IsEditMode)
+            {
+                var detail = await GetDeviceDetailUseCase.ExecuteAsync(DeviceId!.Value);
+                if (detail is null)
+                {
+                    IsError = true;
+                    StatusMessage = "Không tải được thông tin thiết bị.";
+                    NavigationManager.NavigateTo("/devices");
+                    return;
+                }
+
+                Model = MapToViewModel(detail);
+            }
+
+            EditContext = new EditContext(Model);
+            ValidationMessageStore = new ValidationMessageStore(EditContext);
+            EditContext.OnValidationRequested += (_, _) => ValidationMessageStore.Clear();
+            EditContext.OnFieldChanged += (_, _) => ClearStatus();
         }
         finally
         {
             EmployeesLoading = false;
+            PageLoading = false;
         }
     }
 
@@ -61,7 +90,7 @@ public class CreateDevicePageBase : ComponentBase
         ClearStatus();
         ValidationMessageStore.Clear();
 
-        var result = await CreateDeviceUseCase.ExecuteAsync(new CreateDeviceRequestDto(
+        var request = new CreateDeviceRequestDto(
             Model.DeviceCode,
             Model.DeviceName,
             Model.CategoryId ?? 0,
@@ -72,7 +101,11 @@ public class CreateDevicePageBase : ComponentBase
             Model.WarrantyExpiryDate,
             Model.Status,
             Model.EmployeeId,
-            Model.Note));
+            Model.Note);
+
+        var result = IsEditMode
+            ? await UpdateDeviceUseCase.ExecuteAsync(DeviceId!.Value, request)
+            : await CreateDeviceUseCase.ExecuteAsync(request);
 
         if (!result.Success)
         {
@@ -83,8 +116,6 @@ public class CreateDevicePageBase : ComponentBase
             return;
         }
 
-        IsError = false;
-        StatusMessage = result.Message;
         NavigationManager.NavigateTo("/devices", forceLoad: false);
     }
 
@@ -92,6 +123,21 @@ public class CreateDevicePageBase : ComponentBase
     {
         NavigationManager.NavigateTo("/devices");
     }
+
+    private static CreateDeviceFormViewModel MapToViewModel(DeviceEditorDto detail) => new()
+    {
+        DeviceCode = detail.DeviceCode,
+        DeviceName = detail.DeviceName,
+        CategoryId = detail.CategoryId,
+        Brand = detail.Brand,
+        Model = detail.Model,
+        SerialNumber = detail.SerialNumber,
+        PurchaseDate = detail.PurchaseDate,
+        WarrantyExpiryDate = detail.WarrantyExpiryDate,
+        Status = detail.Status,
+        EmployeeId = detail.EmployeeId,
+        Note = detail.Note
+    };
 
     private void ApplyServerValidation(IReadOnlyDictionary<string, string[]> errors)
     {

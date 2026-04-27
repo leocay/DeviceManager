@@ -17,4 +17,10 @@ public sealed class DeviceInventoryWriteRepository : IDeviceInventoryWriteReposi
         CreateDeviceRequestDto request,
         CancellationToken cancellationToken = default)
         => _deviceApiClient.CreateDeviceAsync(request, cancellationToken);
+
+    public Task<CreateDeviceResultDto> UpdateDeviceAsync(
+        int deviceId,
+        CreateDeviceRequestDto request,
+        CancellationToken cancellationToken = default)
+        => _deviceApiClient.UpdateDeviceAsync(deviceId, request, cancellationToken);
 }
