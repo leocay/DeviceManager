@@ -109,7 +109,16 @@ public class DevicesController : ControllerBase
             PurchaseDate = result.PurchaseDate,
             WarrantyExpiryDate = result.WarrantyExpiryDate,
             Status = result.Status,
-            Note = result.Note
+            Note = result.Note,
+            History = result.Logs
+                .Select(log => new DeviceHistoryResponse
+                {
+                    ActionType = log.ActionType,
+                    ActionBy = log.ActionBy,
+                    ActionTime = log.ActionTime,
+                    Content = log.Content
+                })
+                .ToList()
         });
     }
 

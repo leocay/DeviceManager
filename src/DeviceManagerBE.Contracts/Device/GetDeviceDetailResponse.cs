@@ -15,4 +15,13 @@ public sealed class GetDeviceDetailResponse
     public DateTime? WarrantyExpiryDate { get; init; }
     public string Status { get; init; } = string.Empty;
     public string? Note { get; init; }
+    public IReadOnlyList<DeviceHistoryResponse> History { get; init; } = [];
+}
+
+public sealed class DeviceHistoryResponse
+{
+    public string ActionType { get; init; } = string.Empty;
+    public string ActionBy { get; init; } = string.Empty;
+    public DateTime ActionTime { get; init; }
+    public string? Content { get; init; }
 }

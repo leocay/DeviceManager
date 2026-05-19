@@ -39,5 +39,14 @@ public sealed class DeviceDetailDto
     public DateTime? WarrantyExpiryDate { get; init; }
     public string Status { get; init; } = string.Empty;
     public string? Note { get; init; }
+    public IReadOnlyList<DeviceLogItemDto> Logs { get; init; } = [];
+}
+
+public sealed class DeviceLogItemDto
+{
+    public string ActionType { get; init; } = string.Empty;
+    public string ActionBy { get; init; } = string.Empty;
+    public DateTime ActionTime { get; init; }
+    public string? Content { get; init; }
 }
 

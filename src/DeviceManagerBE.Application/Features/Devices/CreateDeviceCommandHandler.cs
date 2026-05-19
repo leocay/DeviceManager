@@ -34,6 +34,12 @@ public sealed class CreateDeviceCommandHandler : IRequestHandler<CreateDeviceCom
         };
 
         var created = await _deviceWriteRepository.AddAsync(device, cancellationToken);
+        await _deviceWriteRepository.AddLogAsync(
+            created.DeviceId,
+            "Create",
+            "Hệ thống Admin",
+            "Tạo mới thiết bị.",
+            cancellationToken);
 
         return new CreateDeviceResultDto
         {

@@ -5,7 +5,6 @@ using DeviceManagerFE.Features.Devices.Presentation.Services;
 using DeviceManagerFE.Features.Devices.Presentation.ViewModels;
 using DeviceManagerFE.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
 namespace DeviceManagerFE.Components.Pages;
@@ -126,6 +125,9 @@ public class DevicesPageBase : ComponentBase
 
     protected void OpenEditDevicePage(int deviceId)
         => NavigationManager.NavigateTo($"/devices/{deviceId}/edit");
+
+    protected void OpenDeviceDetailPage(int deviceId)
+        => NavigationManager.NavigateTo($"/devices/{deviceId}");
 
     protected async Task ConfirmDeleteDeviceAsync(int deviceId, string deviceCode)
     {

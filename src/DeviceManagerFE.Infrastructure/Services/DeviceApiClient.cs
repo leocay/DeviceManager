@@ -111,7 +111,16 @@ public class DeviceApiClient
             PurchaseDate = result.PurchaseDate,
             WarrantyExpiryDate = result.WarrantyExpiryDate,
             Status = result.Status,
-            Note = result.Note
+            Note = result.Note,
+            History = (result.History ?? [])
+                .Select(log => new DeviceHistoryDto
+                {
+                    ActionType = log.ActionType,
+                    ActionBy = log.ActionBy,
+                    ActionTime = log.ActionTime,
+                    Content = log.Content
+                })
+                .ToList()
         };
     }
 
@@ -331,7 +340,8 @@ public class DeviceApiClient
             .Select(employee => new EmployeeOptionViewDto
             {
                 EmployeeId = employee.EmployeeId,
-                DisplayName = employee.DisplayName
+                DisplayName = employee.DisplayName,
+                FullName = employee.FullName
             })
             .ToList() ?? [];
     }

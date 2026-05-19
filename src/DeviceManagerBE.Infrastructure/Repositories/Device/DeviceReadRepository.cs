@@ -26,6 +26,7 @@ public class DeviceReadRepository : IDeviceReadRepository
             .Include(d => d.Category)
             .Include(d => d.Employee)
             .AsNoTracking()
+            .Where(d => d.Status != "Deleted")
             .AsQueryable();
 
         // Apply search filter
@@ -93,8 +94,9 @@ public class DeviceReadRepository : IDeviceReadRepository
     {
         return await _dbContext.Devices
             .Include(d => d.Category)
+            .Include(d => d.DeviceLogs)
             .AsNoTracking()
-            .Where(d => d.DeviceId == deviceId)
+            .Where(d => d.DeviceId == deviceId && d.Status != "Deleted")
             .Select(d => new DeviceDetailDto
             {
                 DeviceId = d.DeviceId,
@@ -109,7 +111,17 @@ public class DeviceReadRepository : IDeviceReadRepository
                 PurchaseDate = d.PurchaseDate,
                 WarrantyExpiryDate = d.WarrantyExpiryDate,
                 Status = d.Status,
-                Note = d.Note
+                Note = d.Note,
+                Logs = d.DeviceLogs
+                    .OrderByDescending(log => log.ActionTime)
+                    .Select(log => new DeviceLogItemDto
+                    {
+                        ActionType = log.ActionType,
+                        ActionBy = log.ActionBy,
+                        ActionTime = log.ActionTime,
+                        Content = log.Content
+                    })
+                    .ToList()
             })
             .FirstOrDefaultAsync(cancellationToken);
     }

@@ -107,7 +107,7 @@
                                 </td>
                                 <td class="text-right">
                                     <div class="row-actions">
-                                        <button type="button" class="action-btn" title="Xem chi tiết">
+                                        <button type="button" class="action-btn" title="Xem chi tiết" @onclick="() => OpenDeviceDetailPage(device.DeviceId)">
                                             <span class="material-symbols-outlined">visibility</span>
                                         </button>
                                         <button type="button" class="action-btn" title="Chỉnh sửa" @onclick="() => OpenEditDevicePage(device.DeviceId)">

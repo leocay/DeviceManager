@@ -1,4 +1,5 @@
 using DeviceManagerBE.Application.Services.Device;
+using DeviceManagerBE.Domain.Entities;
 using DeviceManagerBE.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using DeviceEntity = DeviceManagerBE.Domain.Entities.Device;
@@ -53,8 +54,34 @@ public sealed class DeviceWriteRepository : IDeviceWriteRepository
             return false;
         }
 
-        _dbContext.Devices.Remove(device);
+        if (string.Equals(device.Status, "Deleted", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        device.Status = "Deleted";
+        device.UpdatedAt = DateTime.UtcNow;
         await _dbContext.SaveChangesAsync(cancellationToken);
         return true;
+    }
+
+    public async Task AddLogAsync(
+        int deviceId,
+        string actionType,
+        string actionBy,
+        string? content,
+        CancellationToken cancellationToken = default)
+    {
+        var log = new DeviceLog
+        {
+            DeviceId = deviceId,
+            ActionType = actionType,
+            ActionBy = actionBy,
+            ActionTime = DateTime.UtcNow,
+            Content = content
+        };
+
+        _dbContext.DeviceLogs.Add(log);
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

@@ -1,0 +1,145 @@
+@page "/devices/{DeviceId:int}"
+@inherits DeviceDetailPageBase
+
+<PageTitle>@BrowserPageTitle</PageTitle>
+
+<main class="inventory-shell device-detail-page">
+    <header class="topbar">
+        <div class="topbar-left">
+            <button type="button" class="icon-btn" title="Thông báo">
+                <span class="material-symbols-outlined">notifications</span>
+            </button>
+            <button type="button" class="icon-btn" title="Hỗ trợ">
+                <span class="material-symbols-outlined">help</span>
+            </button>
+        </div>
+        <div class="topbar-user">
+            <div class="topbar-user-info">
+                <span class="topbar-name">@DisplayName</span>
+                <span class="topbar-role">Administrator</span>
+            </div>
+            <span class="avatar">@AvatarText</span>
+        </div>
+    </header>
+
+    <section class="device-form-shell page-layout">
+        <header class="strict-header">
+            <div class="strict-header-main">
+                <div class="strict-header-row">
+                    <a class="strict-back-link" href="/devices">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        <span>Quay lại danh sách</span>
+                    </a>
+                </div>
+                <div class="strict-header-copy">
+                    <h1 class="strict-title">Thông tin thiết bị &amp; Sở hữu</h1>
+                    <p class="strict-subtitle">Theo dõi hồ sơ thiết bị, tình trạng sử dụng và lịch sử cấp phát nội bộ.</p>
+                </div>
+            </div>
+        </header>
+
+        @if (!string.IsNullOrWhiteSpace(StatusMessage))
+        {
+            <div class="status-banner @(IsError ? "error" : "ok")">@StatusMessage</div>
+        }
+
+        @if (PageLoading)
+        {
+            <div class="detail-loading">Đang tải thông tin thiết bị...</div>
+        }
+        else if (DeviceDetail is not null)
+        {
+            <section class="device-form-card detail-card">
+                <div class="card-title is-blue">Tổng quan thiết bị</div>
+                <div class="detail-hero-grid">
+                    <div class="detail-device-photo" aria-hidden="true">
+                        <span class="material-symbols-outlined">devices</span>
+                    </div>
+                    <div class="detail-meta-grid">
+                        <div class="detail-meta-item">
+                            <span class="detail-label">Mã thiết bị</span>
+                            <strong>@DeviceDetail.DeviceCode</strong>
+                        </div>
+                        <div class="detail-meta-item">
+                            <span class="detail-label">Loại</span>
+                            <strong>@CategoryName</strong>
+                        </div>
+                        <div class="detail-meta-item">
+                            <span class="detail-label">Hãng sản xuất</span>
+                            <strong>@DisplayBrand</strong>
+                        </div>
+                        <div class="detail-meta-item">
+                            <span class="detail-label">Trạng thái</span>
+                            <span class="status-pill @StatusCssClass">@StatusLabel</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="device-form-card detail-card">
+                <div class="card-title is-amber">Thông tin kỹ thuật &amp; Sở hữu</div>
+                <div class="detail-content-block">
+                    <div class="detail-name">@DeviceDetail.DeviceName</div>
+
+                    <div class="detail-technical-grid">
+                        <div class="detail-technical-item">
+                            <span class="detail-label">Model</span>
+                            <strong>@DisplayModel</strong>
+                        </div>
+                        <div class="detail-technical-item">
+                            <span class="detail-label">Số serial</span>
+                            <strong>@DisplaySerialNumber</strong>
+                        </div>
+                        <div class="detail-technical-item">
+                            <span class="detail-label">Ngày mua</span>
+                            <strong>@DisplayPurchaseDate</strong>
+                        </div>
+                        <div class="detail-technical-item">
+                            <span class="detail-label">Hạn bảo hành</span>
+                            <strong>@DisplayWarrantyDate</strong>
+                        </div>
+                    </div>
+
+                    <div class="detail-note-block">
+                        <span class="detail-label">Ghi chú</span>
+                        <p>@DisplayNote</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="device-form-card detail-card detail-owner-card">
+                <div class="card-title is-blue">Nhân viên sử dụng</div>
+                <div class="owner-row">
+                    <div>
+                        <div class="owner-name">@EmployeeName</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="device-form-card detail-card detail-history">
+                <div class="card-title is-blue">Lịch sử thiết bị</div>
+                <div class="detail-history-card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ngày</th>
+                                <th>Hành động</th>
+                                <th>Nội dung thay đổi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var historyItem in HistoryItems)
+                            {
+                                <tr>
+                                    <td>@historyItem.DateText</td>
+                                    <td>@historyItem.Action</td>
+                                    <td class="history-change-cell">@historyItem.ChangeContent</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        }
+    </section>
+</main>

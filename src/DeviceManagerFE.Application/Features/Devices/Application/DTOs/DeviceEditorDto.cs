@@ -14,4 +14,13 @@ public sealed class DeviceEditorDto
     public DateTime? WarrantyExpiryDate { get; init; }
     public string Status { get; init; } = string.Empty;
     public string? Note { get; init; }
+    public IReadOnlyList<DeviceHistoryDto> History { get; init; } = [];
+}
+
+public sealed class DeviceHistoryDto
+{
+    public string ActionType { get; init; } = string.Empty;
+    public string ActionBy { get; init; } = string.Empty;
+    public DateTime ActionTime { get; init; }
+    public string? Content { get; init; }
 }

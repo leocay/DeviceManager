@@ -571,13 +571,19 @@ html {
 }
 
 .status-pill {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 999px;
-    padding: 4px 10px;
+    padding: 6px 14px;
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.04em;
     text-transform: uppercase;
+    white-space: nowrap;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .status-pill.is-new {
@@ -840,6 +846,12 @@ html {
     border-radius: 16px;
     padding: 22px;
     box-shadow: 0 14px 28px rgba(35, 53, 92, 0.06);
+}
+/* add spacing between cards for better visual separation */
+.device-form-card + .device-form-card,
+.device-form-card + .detail-card,
+.detail-card + .detail-card {
+    margin-top: 16px;
 }
 
 .card-title {
@@ -1501,6 +1513,298 @@ html {
 
     .page-layout .strict-subtitle {
         white-space: normal;
+    }
+}
+
+.device-detail-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    background: rgba(9, 16, 31, 0.46);
+    backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 26px;
+    overflow-y: auto;
+}
+
+.device-detail-panel {
+    width: min(1120px, 100%);
+    border-radius: 18px;
+    border: 1px solid #d3dbe9;
+    background: linear-gradient(180deg, #f2f5fa 0%, #edf1f7 100%);
+    box-shadow: 0 28px 60px rgba(7, 16, 32, 0.28);
+    padding: 22px;
+}
+
+.device-detail-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.device-detail-header h2 {
+    margin: 0;
+    color: #10307e;
+    font-size: 1.24rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+.device-detail-header p {
+    margin: 6px 0 0;
+    color: #5f6b82;
+    font-size: 0.9rem;
+}
+
+.detail-loading {
+    border: 1px dashed #cdd8eb;
+    border-radius: 12px;
+    background: #f8fbff;
+    padding: 22px;
+    color: #43629e;
+    font-weight: 600;
+}
+
+.detail-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(240px, 0.9fr) minmax(0, 1.1fr);
+    gap: 14px;
+}
+
+.detail-card {
+    background: rgba(255, 255, 255, 0.92);
+}
+
+.device-detail-page .detail-card {
+    margin-bottom: 16px;
+}
+
+.device-detail-page .detail-card:last-child {
+    margin-bottom: 0;
+}
+
+.detail-content-block {
+    display: grid;
+    gap: 8px;
+}
+
+.detail-device-photo {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    border: 1px solid #c9d5ea;
+    background:
+        radial-gradient(180px circle at 10% 18%, rgba(70, 100, 170, 0.3), transparent 62%),
+        radial-gradient(260px circle at 92% -10%, rgba(18, 46, 107, 0.55), transparent 64%),
+        linear-gradient(160deg, #121620 0%, #223458 52%, #16253f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.detail-device-photo .material-symbols-outlined {
+    color: rgba(245, 250, 255, 0.88);
+    font-size: 68px;
+}
+
+.detail-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.detail-meta-item,
+.detail-technical-item {
+    border-top: 1px solid #e5ebf5;
+    padding-top: 8px;
+    display: grid;
+    gap: 4px;
+}
+
+.detail-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #6f7b93;
+    font-size: 0.68rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.detail-name {
+    margin-top: 8px;
+    color: #101728;
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+.detail-technical-grid {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.detail-note-block {
+    margin-top: 12px;
+    border-top: 1px solid #e5ebf5;
+    padding-top: 10px;
+}
+
+.detail-note-block p {
+    margin: 8px 0 0;
+    color: #39455d;
+    font-size: 0.84rem;
+    line-height: 1.48;
+    font-style: italic;
+}
+
+.detail-owner-card {
+    margin-top: 12px;
+}
+
+.owner-row {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.owner-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: #2e415f;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+}
+
+.owner-name {
+    color: #0f233f;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.owner-row p {
+    margin: 3px 0 0;
+    color: #68758e;
+    font-size: 0.79rem;
+}
+
+.detail-history {
+    margin-top: 0;
+}
+
+.detail-history-card {
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #d9e0ec;
+    border-radius: 10px;
+}
+
+.detail-history-card table {
+    width: 100%;
+    border-collapse: collapse;
+    /* use fixed table layout so column widths are respected and cells don't wrap */
+    table-layout: fixed !important;
+}
+
+.detail-history-card th,
+.detail-history-card td {
+    border-bottom: 1px solid #e1e8f3;
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.history-change-cell {
+    min-width: 200px;
+    color: #33415b;
+    line-height: 1.45;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.detail-history-card th {
+    font-size: 0.67rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: #6f7d95;
+    background: #f7f9fd;
+}
+
+/* Wider date and action columns for readability */
+.detail-history-card th:nth-child(1),
+.detail-history-card td:nth-child(1) {
+    width: 160px !important;
+    max-width: 160px !important;
+}
+
+.detail-history-card th:nth-child(2),
+.detail-history-card td:nth-child(2) {
+    width: 220px !important;
+    max-width: 220px !important;
+}
+
+/* prevent wrapping for date and action columns */
+.detail-history-card th:nth-child(1),
+.detail-history-card td:nth-child(1),
+.detail-history-card th:nth-child(2),
+.detail-history-card td:nth-child(2) {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* increase padding and border separation for better visual */
+.detail-history-card td,
+.detail-history-card th {
+    padding: 14px 18px !important;
+}
+
+.device-form-card {
+    padding: 28px !important;
+}
+
+.detail-history-card tbody tr:last-child td {
+    border-bottom: none;
+}
+
+@media (max-width: 900px) {
+    .device-detail-overlay {
+        padding: 12px;
+    }
+
+    .device-detail-panel {
+        padding: 14px;
+        border-radius: 14px;
+    }
+
+    .detail-hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-meta-grid,
+    .detail-technical-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-history-card {
+        overflow-x: auto;
+    }
+
+    .detail-history-card table {
+        min-width: 620px;
     }
 }
 

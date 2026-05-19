@@ -12,4 +12,10 @@ public interface IDeviceWriteRepository
     Task<DeviceEntity> AddAsync(DeviceEntity device, CancellationToken cancellationToken = default);
     Task<DeviceEntity> UpdateAsync(DeviceEntity device, CancellationToken cancellationToken = default);
     Task<bool> DeleteAsync(int deviceId, CancellationToken cancellationToken = default);
+    Task AddLogAsync(
+        int deviceId,
+        string actionType,
+        string actionBy,
+        string? content,
+        CancellationToken cancellationToken = default);
 }
