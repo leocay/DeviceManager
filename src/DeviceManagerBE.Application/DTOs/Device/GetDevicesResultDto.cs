@@ -14,8 +14,10 @@ public class GetDevicesResultDto
 public class DeviceItemDto
 {
     public int DeviceId { get; init; }
+    public string DeviceCode { get; init; } = string.Empty;
     public string DeviceName { get; init; } = string.Empty;
     public string CategoryName { get; init; } = string.Empty;
+    public string? EmployeeName { get; init; }
     public string? SerialNumber { get; init; }
     public string Status { get; init; } = string.Empty;
     public string? Brand { get; init; }

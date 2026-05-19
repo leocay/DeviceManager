@@ -34,8 +34,10 @@ public sealed class GetDeviceInventoryUseCase : IGetDeviceInventoryUseCase
         var devices = data.Items
             .Select(device => new DeviceInventoryItemDto(
                 device.DeviceId,
+                device.DeviceCode,
                 device.DeviceName,
                 device.CategoryName,
+                device.EmployeeName,
                 device.SerialNumber,
                 DeviceBusinessRules.ToLocalizedStatus(device.Status),
                 DeviceBusinessRules.BuildDescription(device)))

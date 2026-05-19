@@ -60,8 +60,10 @@ public class DevicesController : ControllerBase
             Devices = result.Devices.Select(d => new DeviceDto
             {
                 DeviceId = d.DeviceId,
+                DeviceCode = d.DeviceCode,
                 DeviceName = d.DeviceName,
                 CategoryName = d.CategoryName,
+                EmployeeName = d.EmployeeName,
                 SerialNumber = d.SerialNumber,
                 Status = d.Status,
                 Brand = d.Brand,

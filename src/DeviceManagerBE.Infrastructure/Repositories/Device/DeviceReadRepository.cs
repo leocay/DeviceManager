@@ -24,6 +24,7 @@ public class DeviceReadRepository : IDeviceReadRepository
     {
         var query = _dbContext.Devices
             .Include(d => d.Category)
+            .Include(d => d.Employee)
             .AsNoTracking()
             .AsQueryable();
 
@@ -31,8 +32,8 @@ public class DeviceReadRepository : IDeviceReadRepository
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
             query = query.Where(d =>
-                d.DeviceName.Contains(searchTerm) ||
-                (d.SerialNumber != null && d.SerialNumber.Contains(searchTerm)));
+                d.DeviceCode.Contains(searchTerm) ||
+                (d.Employee != null && d.Employee.FullName.Contains(searchTerm)));
         }
 
         // Apply category filter
@@ -63,8 +64,10 @@ public class DeviceReadRepository : IDeviceReadRepository
             .Select(d => new DeviceItemDto
             {
                 DeviceId = d.DeviceId,
+                DeviceCode = d.DeviceCode,
                 DeviceName = d.DeviceName,
                 CategoryName = d.Category != null ? d.Category.CategoryName : string.Empty,
+                EmployeeName = d.Employee != null ? d.Employee.FullName : null,
                 SerialNumber = d.SerialNumber,
                 Status = d.Status,
                 Brand = d.Brand,

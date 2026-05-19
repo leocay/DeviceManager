@@ -4,8 +4,10 @@ public sealed record FilterOptionViewModel(string Value, string Label);
 
 public sealed record DeviceRowViewModel(
     int DeviceId,
+    string DeviceCode,
     string DeviceName,
     string CategoryName,
+    string? EmployeeName,
     string? SerialNumber,
     string Description,
     string StatusLabel,

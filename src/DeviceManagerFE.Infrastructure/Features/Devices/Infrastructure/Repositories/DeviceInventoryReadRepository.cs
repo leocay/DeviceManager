@@ -36,8 +36,10 @@ public sealed class DeviceInventoryReadRepository : IDeviceInventoryReadReposito
             .Select(device => new DeviceEntity
             {
                 DeviceId = device.DeviceId,
+                DeviceCode = device.DeviceCode,
                 DeviceName = device.DeviceName,
                 CategoryName = device.CategoryName,
+                EmployeeName = device.EmployeeName,
                 SerialNumber = device.SerialNumber,
                 Status = device.Status,
                 Brand = device.Brand,

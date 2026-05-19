@@ -42,7 +42,7 @@
         <section class="inventory-filters">
             <div class="search-wrap">
                 <span class="material-symbols-outlined">search</span>
-                <input value="@Query.SearchTerm" @oninput="OnSearchInputAsync" placeholder="Tìm kiếm theo tên hoặc số serial..." />
+                <input value="@Query.SearchTerm" @oninput="OnSearchInputAsync" placeholder="Tìm theo mã nội bộ hoặc tên người dùng..." />
             </div>
 
             <select value="@Query.CategoryId" @onchange="OnCategoryChangedAsync">
@@ -81,9 +81,9 @@
                 <table class="inventory-table">
                     <thead>
                         <tr>
-                            <th>Tên thiết bị</th>
+                            <th>Mã nội bộ</th>
                             <th>Loại</th>
-                            <th>Số serial</th>
+                            <th>Người sử dụng</th>
                             <th>Trạng thái</th>
                             <th class="text-right">Thao tác</th>
                         </tr>
@@ -93,11 +93,10 @@
                         {
                             <tr>
                                 <td>
-                                    <div class="device-main">@device.DeviceName</div>
-                                    <div class="device-sub">@device.Description</div>
+                                    <div class="device-main">@device.DeviceCode</div>
                                 </td>
                                 <td><span class="chip">@device.CategoryName</span></td>
-                                <td>@(device.SerialNumber ?? "-")</td>
+                                <td>@(device.EmployeeName ?? "-")</td>
                                 <td>
                                     <span class="status-pill @device.StatusCssClass">@device.StatusLabel</span>
                                 </td>

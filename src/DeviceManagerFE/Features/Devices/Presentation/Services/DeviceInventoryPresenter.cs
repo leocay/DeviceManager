@@ -48,8 +48,10 @@ public sealed class DeviceInventoryPresenter : IDeviceInventoryPresenter
         var rows = source.Devices
             .Select(device => new DeviceRowViewModel(
                 device.DeviceId,
+                device.DeviceCode,
                 device.DeviceName,
                 device.CategoryName,
+                device.EmployeeName,
                 device.SerialNumber,
                 device.Description,
                 device.Status,
