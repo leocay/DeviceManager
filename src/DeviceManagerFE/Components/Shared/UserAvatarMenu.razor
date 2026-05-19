@@ -1,0 +1,56 @@
+@using DeviceManagerFE.Services
+@inject AuthSessionState AuthSessionState
+@inject NavigationManager NavigationManager
+
+<div class="topbar-user-menu">
+    <button type="button" class="topbar-user-button" @onclick="ToggleMenu" aria-haspopup="menu" aria-expanded="@IsOpen">
+        <span class="topbar-user-info">
+            <span class="topbar-name">@DisplayName</span>
+            <span class="topbar-role">@RoleLabel</span>
+        </span>
+        <span class="avatar">@AvatarText</span>
+    </button>
+
+    @if (IsOpen)
+    {
+        <div class="user-menu-panel" role="menu" aria-label="Tùy chọn người dùng">
+            <div class="user-menu-header">
+                <span class="user-menu-name">@DisplayName</span>
+                <span class="user-menu-role">@RoleLabel</span>
+            </div>
+            <button type="button" class="user-menu-action" @onclick="LogoutAsync">
+                <span class="material-symbols-outlined">logout</span>
+                <span>Đăng xuất</span>
+            </button>
+        </div>
+    }
+</div>
+
+@code {
+    private bool IsOpen { get; set; }
+
+    [Parameter] public string DisplayName { get; set; } = "Administrator";
+    [Parameter] public string RoleLabel { get; set; } = "Administrator";
+
+    private string AvatarText => string.IsNullOrWhiteSpace(DisplayName)
+        ? "A"
+        : DisplayName.Trim()[0].ToString().ToUpperInvariant();
+
+    private void ToggleMenu()
+    {
+        IsOpen = !IsOpen;
+    }
+
+    private void CloseMenu()
+    {
+        IsOpen = false;
+    }
+
+    private Task LogoutAsync()
+    {
+        AuthSessionState.Clear();
+        CloseMenu();
+        NavigationManager.NavigateTo("/", forceLoad: true);
+        return Task.CompletedTask;
+    }
+}

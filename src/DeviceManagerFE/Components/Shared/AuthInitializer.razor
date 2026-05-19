@@ -1,0 +1,31 @@
+@inject IJSRuntime JSRuntime
+@inject DeviceManagerFE.Services.AuthSessionState AuthSessionState
+@inject Microsoft.Extensions.Logging.ILogger<DeviceManagerFE.Components.Shared.AuthInitializer> Logger
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+
+        try
+        {
+            if (!AuthSessionState.IsAuthenticated)
+            {
+                var token = await JSRuntime.InvokeAsync<string?>("blazorGetLocal", "__Auth_AccessToken");
+                var name = await JSRuntime.InvokeAsync<string?>("blazorGetLocal", "__Auth_FullName");
+                Logger.LogDebug("AuthInitializer: local token='{Token}', name='{Name}'", token, name);
+                if (!string.IsNullOrWhiteSpace(token))
+                {
+                    AuthSessionState.AccessToken = token;
+                    AuthSessionState.FullName = name;
+                    Logger.LogInformation("AuthInitializer: populated AuthSessionState from localStorage for user '{Name}'", name);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogWarning(ex, "AuthInitializer: failed to read localStorage");
+        }
+        StateHasChanged();
+    }
+}

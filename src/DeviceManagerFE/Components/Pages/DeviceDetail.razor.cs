@@ -2,6 +2,7 @@ using DeviceManagerFE.Features.Devices.Application.DTOs;
 using DeviceManagerFE.Features.Devices.Application.Interfaces;
 using DeviceManagerFE.Features.Devices.Presentation.Services;
 using DeviceManagerFE.Services;
+using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components;
 
 namespace DeviceManagerFE.Components.Pages;
@@ -12,6 +13,7 @@ public class DeviceDetailPageBase : ComponentBase
     [Inject] protected IGetEmployeeDirectoryUseCase GetEmployeeDirectoryUseCase { get; set; } = default!;
     [Inject] protected IDeviceInventoryPresenter DeviceInventoryPresenter { get; set; } = default!;
     [Inject] protected AuthSessionState AuthSessionState { get; set; } = default!;
+    [Inject] protected IJSRuntime JSRuntime { get; set; } = default!;
     [Inject] protected NavigationManager NavigationManager { get; set; } = default!;
 
     [Parameter] public int DeviceId { get; set; }
@@ -156,6 +158,36 @@ public class DeviceDetailPageBase : ComponentBase
             return;
         }
 
+        // try to populate auth from cookie if not already authenticated
+        if (!AuthSessionState.IsAuthenticated)
+        {
+            try
+            {
+                var token = await JSRuntime.InvokeAsync<string?>("blazorGetLocal", "__Auth_AccessToken");
+                var name = await JSRuntime.InvokeAsync<string?>("blazorGetLocal", "__Auth_FullName");
+                if (string.IsNullOrWhiteSpace(token))
+                {
+                    token = await JSRuntime.InvokeAsync<string?>("blazorGetCookie", "__Auth_AccessToken");
+                    name = await JSRuntime.InvokeAsync<string?>("blazorGetCookie", "__Auth_FullName");
+                }
+
+                if (!string.IsNullOrWhiteSpace(token))
+                {
+                    AuthSessionState.AccessToken = token;
+                    AuthSessionState.FullName = name;
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        if (!AuthSessionState.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/");
+            return;
+        }
+
         PageLoading = true;
         StatusMessage = null;
 
@@ -208,8 +240,8 @@ public class DeviceDetailPageBase : ComponentBase
         return actionType.Trim().ToLowerInvariant() switch
         {
             "create" => "Tạo mới thiết bị",
-            "update" => "Cập nhật thông tin",
-            "delete" => "Xóa thiết bị",
+                "update" => "Cập nhật thông tin",
+                "delete" => "Xóa thiết bị",
             _ => string.IsNullOrWhiteSpace(actionType) ? "Thao tác hệ thống" : actionType
         };
     }

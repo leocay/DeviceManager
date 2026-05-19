@@ -3,6 +3,7 @@ using DeviceManagerFE.Features.Devices.Application.Interfaces;
 using DeviceManagerFE.Features.Devices.Presentation.Services;
 using DeviceManagerFE.Features.Devices.Presentation.ViewModels;
 using DeviceManagerFE.Services;
+using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
@@ -16,6 +17,7 @@ public class CreateDevicePageBase : ComponentBase
     [Inject] protected IGetEmployeeDirectoryUseCase GetEmployeeDirectoryUseCase { get; set; } = default!;
     [Inject] protected IDeviceInventoryPresenter DeviceInventoryPresenter { get; set; } = default!;
     [Inject] protected AuthSessionState AuthSessionState { get; set; } = default!;
+    [Inject] protected IJSRuntime JSRuntime { get; set; } = default!;
     [Inject] protected NavigationManager NavigationManager { get; set; } = default!;
 
     [Parameter] public int? DeviceId { get; set; }
@@ -47,8 +49,31 @@ public class CreateDevicePageBase : ComponentBase
     {
         if (!AuthSessionState.IsAuthenticated)
         {
-            NavigationManager.NavigateTo("/");
-            return;
+            try
+            {
+                var token = await JSRuntime.InvokeAsync<string?>("blazorGetLocal", "__Auth_AccessToken");
+                var name = await JSRuntime.InvokeAsync<string?>("blazorGetLocal", "__Auth_FullName");
+                if (string.IsNullOrWhiteSpace(token))
+                {
+                    token = await JSRuntime.InvokeAsync<string?>("blazorGetCookie", "__Auth_AccessToken");
+                    name = await JSRuntime.InvokeAsync<string?>("blazorGetCookie", "__Auth_FullName");
+                }
+
+                if (!string.IsNullOrWhiteSpace(token))
+                {
+                    AuthSessionState.AccessToken = token;
+                    AuthSessionState.FullName = name;
+                }
+            }
+            catch
+            {
+            }
+
+            if (!AuthSessionState.IsAuthenticated)
+            {
+                NavigationManager.NavigateTo("/");
+                return;
+            }
         }
 
         EmployeesLoading = true;

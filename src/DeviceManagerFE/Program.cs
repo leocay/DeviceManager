@@ -70,6 +70,41 @@ app.UseStaticFiles();
 app.UseSession();
 app.UseAntiforgery();
 
+// Populate AuthSessionState from server session on each request so components
+// see persisted authentication after a full-page reload.
+app.Use(async (context, next) =>
+{
+    try
+    {
+        var auth = context.RequestServices.GetService(typeof(DeviceManagerFE.Services.AuthSessionState)) as DeviceManagerFE.Services.AuthSessionState;
+        if (auth is not null)
+        {
+            var token = context.Session.GetString("__Auth_AccessToken");
+            var name = context.Session.GetString("__Auth_FullName");
+
+            // fallback: read from request cookies if session not populated
+            if (string.IsNullOrWhiteSpace(token) && context.Request.Cookies.ContainsKey("__Auth_AccessToken"))
+            {
+                token = context.Request.Cookies["__Auth_AccessToken"];
+            }
+
+            if (string.IsNullOrWhiteSpace(name) && context.Request.Cookies.ContainsKey("__Auth_FullName"))
+            {
+                name = context.Request.Cookies["__Auth_FullName"];
+            }
+
+            auth.AccessToken = string.IsNullOrWhiteSpace(token) ? null : token;
+            auth.FullName = string.IsNullOrWhiteSpace(name) ? null : name;
+        }
+    }
+    catch
+    {
+        // best effort; don't fail request if session not available
+    }
+
+    await next();
+});
+
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
