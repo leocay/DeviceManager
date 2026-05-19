@@ -47,6 +47,7 @@ builder.Services.AddScoped<IDeviceInventoryReadRepository, DeviceInventoryReadRe
 builder.Services.AddScoped<IDeviceInventoryWriteRepository, DeviceInventoryWriteRepository>();
 builder.Services.AddScoped<IEmployeeDirectoryRepository, EmployeeDirectoryRepository>();
 builder.Services.AddScoped<IGetDeviceInventoryUseCase, GetDeviceInventoryUseCase>();
+builder.Services.AddScoped<IDeleteDeviceUseCase, DeleteDeviceUseCase>();
 builder.Services.AddScoped<ICreateDeviceUseCase, CreateDeviceUseCase>();
 builder.Services.AddScoped<IUpdateDeviceUseCase, UpdateDeviceUseCase>();
 builder.Services.AddScoped<IGetDeviceDetailUseCase, GetDeviceDetailUseCase>();

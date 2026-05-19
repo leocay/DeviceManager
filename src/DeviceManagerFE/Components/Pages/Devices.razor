@@ -67,6 +67,11 @@
             <div class="status-banner error">@ErrorMessage</div>
         }
 
+        @if (!string.IsNullOrWhiteSpace(StatusMessage))
+        {
+            <div class="status-banner @(IsError ? "error" : "ok")">@StatusMessage</div>
+        }
+
         @if (Loading)
         {
             <p>Đang tải dữ liệu...</p>
@@ -108,7 +113,7 @@
                                         <button type="button" class="action-btn" title="Chỉnh sửa" @onclick="() => OpenEditDevicePage(device.DeviceId)">
                                             <span class="material-symbols-outlined">edit</span>
                                         </button>
-                                        <button type="button" class="action-btn" title="Xóa">
+                                        <button type="button" class="action-btn" title="Xóa" @onclick="() => ConfirmDeleteDeviceAsync(device.DeviceId, device.DeviceCode)">
                                             <span class="material-symbols-outlined">delete</span>
                                         </button>
                                     </div>

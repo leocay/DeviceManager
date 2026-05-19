@@ -6,19 +6,24 @@ using DeviceManagerFE.Features.Devices.Presentation.ViewModels;
 using DeviceManagerFE.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 
 namespace DeviceManagerFE.Components.Pages;
 
 public class DevicesPageBase : ComponentBase
 {
     [Inject] protected IGetDeviceInventoryUseCase GetDeviceInventoryUseCase { get; set; } = default!;
+    [Inject] protected IDeleteDeviceUseCase DeleteDeviceUseCase { get; set; } = default!;
     [Inject] protected IDeviceInventoryPresenter DeviceInventoryPresenter { get; set; } = default!;
     [Inject] protected AuthSessionState AuthSessionState { get; set; } = default!;
     [Inject] protected NavigationManager NavigationManager { get; set; } = default!;
+    [Inject] protected IJSRuntime JSRuntime { get; set; } = default!;
 
     protected IReadOnlyList<DeviceRowViewModel> Devices { get; private set; } = [];
     protected bool Loading { get; private set; }
     protected string? ErrorMessage { get; private set; }
+    protected string? StatusMessage { get; private set; }
+    protected bool IsError { get; private set; }
     protected DeviceInventoryQuery Query { get; private set; } = DeviceInventoryQuery.Default;
     protected int TotalCount { get; private set; }
     protected int TotalPages { get; private set; } = 1;
@@ -122,6 +127,28 @@ public class DevicesPageBase : ComponentBase
     protected void OpenEditDevicePage(int deviceId)
         => NavigationManager.NavigateTo($"/devices/{deviceId}/edit");
 
+    protected async Task ConfirmDeleteDeviceAsync(int deviceId, string deviceCode)
+    {
+        var confirmed = await JSRuntime.InvokeAsync<bool>(
+            "confirm",
+            $"Bạn có chắc chắn muốn xóa thiết bị {deviceCode} không?");
+
+        if (!confirmed)
+        {
+            return;
+        }
+
+        var result = await DeleteDeviceUseCase.ExecuteAsync(deviceId);
+        if (!result.Success)
+        {
+            IsError = true;
+            StatusMessage = result.Message;
+            return;
+        }
+
+        await ReloadDevicesAfterDeleteAsync(result.Message);
+    }
+
     protected string GetDisplayRangeText()
     {
         if (TotalCount == 0)
@@ -187,5 +214,19 @@ public class DevicesPageBase : ComponentBase
         {
             Loading = false;
         }
+    }
+
+    private async Task ReloadDevicesAfterDeleteAsync(string message)
+    {
+        await LoadDevicesAsync();
+
+        if (Devices.Count == 0 && TotalCount > 0 && Query.PageNumber > TotalPages)
+        {
+            Query = Query with { PageNumber = TotalPages };
+            await LoadDevicesAsync();
+        }
+
+        IsError = false;
+        StatusMessage = message;
     }
 }

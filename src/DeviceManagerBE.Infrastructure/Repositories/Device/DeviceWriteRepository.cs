@@ -44,4 +44,17 @@ public sealed class DeviceWriteRepository : IDeviceWriteRepository
         await _dbContext.SaveChangesAsync(cancellationToken);
         return device;
     }
+
+    public async Task<bool> DeleteAsync(int deviceId, CancellationToken cancellationToken = default)
+    {
+        var device = await _dbContext.Devices.FirstOrDefaultAsync(device => device.DeviceId == deviceId, cancellationToken);
+        if (device is null)
+        {
+            return false;
+        }
+
+        _dbContext.Devices.Remove(device);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return true;
+    }
 }

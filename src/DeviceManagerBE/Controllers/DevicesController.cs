@@ -189,6 +189,21 @@ public class DevicesController : ControllerBase
             Message = "Cap nhat thiet bi thanh cong."
         });
     }
+
+    [HttpDelete("{deviceId:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteDevice(int deviceId, CancellationToken cancellationToken = default)
+    {
+        var deleted = await _mediator.Send(new DeleteDeviceCommand { DeviceId = deviceId }, cancellationToken);
+        if (!deleted)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
+    }
 }
 
 

@@ -247,6 +247,61 @@ public class DeviceApiClient
             cancellationToken);
     }
 
+    public async Task<CreateDeviceResultDto> DeleteDeviceAsync(
+        int deviceId,
+        CancellationToken cancellationToken = default)
+    {
+        if (!_authSessionState.IsAuthenticated)
+        {
+            return BuildSessionExpiredResult();
+        }
+
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authSessionState.AccessToken);
+
+        HttpResponseMessage response;
+
+        try
+        {
+            response = await _httpClient.DeleteAsync($"/api/v1/devices/{deviceId}", cancellationToken);
+        }
+        catch (HttpRequestException)
+        {
+            return BuildConnectionErrorResult();
+        }
+        catch (TaskCanceledException)
+        {
+            return new CreateDeviceResultDto
+            {
+                Success = false,
+                Message = "Yêu cầu xóa thiết bị bị timeout."
+            };
+        }
+
+        if (response.IsSuccessStatusCode)
+        {
+            return new CreateDeviceResultDto
+            {
+                Success = true,
+                Message = "Xóa thiết bị thành công."
+            };
+        }
+
+        if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            return new CreateDeviceResultDto
+            {
+                Success = false,
+                Message = "Thiết bị không tồn tại hoặc đã bị xóa."
+            };
+        }
+
+        return new CreateDeviceResultDto
+        {
+            Success = false,
+            Message = $"Xóa thiết bị thất bại. HTTP {(int)response.StatusCode}."
+        };
+    }
+
     public async Task<IReadOnlyList<EmployeeOptionViewDto>> GetEmployeesAsync(CancellationToken cancellationToken = default)
     {
         if (!_authSessionState.IsAuthenticated)

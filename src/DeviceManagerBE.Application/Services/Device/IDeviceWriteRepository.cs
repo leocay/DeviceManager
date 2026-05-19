@@ -11,4 +11,5 @@ public interface IDeviceWriteRepository
     Task<DeviceEntity?> GetByIdAsync(int deviceId, CancellationToken cancellationToken = default);
     Task<DeviceEntity> AddAsync(DeviceEntity device, CancellationToken cancellationToken = default);
     Task<DeviceEntity> UpdateAsync(DeviceEntity device, CancellationToken cancellationToken = default);
+    Task<bool> DeleteAsync(int deviceId, CancellationToken cancellationToken = default);
 }
