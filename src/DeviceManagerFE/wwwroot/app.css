@@ -59,7 +59,7 @@ html {
 
 .login-wrapper {
     width: 100%;
-    max-width: 440px;
+    max-width: 560px;
 }
 
 .brand-header {
@@ -70,16 +70,17 @@ html {
 .brand-title {
     margin: 0;
     font-family: "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
-    font-size: 2rem;
+    font-size: 1.7rem;
     font-weight: 800;
-    letter-spacing: -0.02em;
+    line-height: 1.2;
+    outline: none;
+    white-space: nowrap;
 }
 
 .brand-subtitle {
     margin: 8px 0 0;
     font-size: 0.72rem;
     letter-spacing: 0.2em;
-    text-transform: uppercase;
     color: var(--outline);
     font-weight: 700;
 }
@@ -266,6 +267,10 @@ html {
     .login-card {
         padding: 24px 18px;
         border-radius: 14px;
+    }
+
+    .brand-title {
+        font-size: 1.12rem;
     }
 }
 

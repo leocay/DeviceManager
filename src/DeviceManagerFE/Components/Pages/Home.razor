@@ -1,13 +1,13 @@
 ﻿@page "/"
 @inherits HomePageBase
 
-<PageTitle>AssetCentral - Đăng nhập quản trị viên</PageTitle>
+<PageTitle>HỆ THỐNG QUẢN LÝ THIẾT BỊ - Đăng nhập quản trị viên</PageTitle>
 
 <main class="login-shell">
 	<section class="login-wrapper">
 		<header class="brand-header">
-			<h1 class="brand-title">AssetCentral</h1>
-			<p class="brand-subtitle">Admin Control Portal</p>
+			<h1 class="brand-title">HỆ THỐNG QUẢN LÝ THIẾT BỊ</h1>
+			<p class="brand-subtitle">Công ty CAE TECHNOLOGY</p>
 		</header>
 
 		<article class="login-card">
@@ -28,7 +28,7 @@
 					<label for="username">TÊN ĐĂNG NHẬP</label>
 					<div class="input-wrap">
 						<span class="material-symbols-outlined">person</span>
-						<InputText id="username" @bind-Value="Model.Username" placeholder="admin" autocomplete="username" />
+						<InputText id="username" @bind-Value="Model.Username" autocomplete="username" />
 					</div>
 					<ValidationMessage For="() => Model.Username" />
 				</div>
@@ -37,15 +37,10 @@
 					<label for="password">MẬT KHẨU</label>
 					<div class="input-wrap">
 						<span class="material-symbols-outlined">lock</span>
-						<InputText id="password" @bind-Value="Model.Password" type="password" placeholder="••••••••" autocomplete="current-password" />
+						<InputText id="password" @bind-Value="Model.Password" type="password" autocomplete="current-password" />
 					</div>
 					<ValidationMessage For="() => Model.Password" />
 				</div>
-
-				<label class="remember-row" for="remember">
-					<InputCheckbox id="remember" @bind-Value="Model.RememberMe" />
-					<span>Ghi nhớ thiết bị này</span>
-				</label>
 
 				<button type="submit" class="login-btn" disabled="@Submitting">
 					<span>@(Submitting ? "Đang xử lý..." : "Đăng nhập")</span>

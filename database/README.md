@@ -40,3 +40,22 @@ Khi tạo database lần đầu, hệ thống sẽ seed sẵn một tài khoản
 - Password: `Admin@123456`
 
 Mật khẩu được lưu dưới dạng hash trong database. Nên đổi ngay sau khi đăng nhập lần đầu.
+
+## publish
+```powershell
+dotnet publish src\DeviceManagerBE\DeviceManagerBE.csproj -c Release -o publish\be
+dotnet publish src\DeviceManagerFE\DeviceManagerFE.csproj -c Release -o publish\fe
+```
+
+## migration 
+```powerShell
+cd D:\LINH\DEV\DeviceManager
+$env:ConnectionStrings__DefaultConnection="Server=103.170.123.126,1433;Database=DeviceManagerDb;User Id=devicemanager_user;Password=Linh@3181992;Encrypt=False;TrustServerCertificate=True;MultipleActiveResultSets=True"
+$env:Jwt__Issuer="DeviceManagerBE"
+$env:Jwt__Audience="DeviceManagerFE"
+$env:Jwt__SigningKey="HayDoiChuoiNayThanhSecretRatDaiToiThieu32KyTu_Production_2026"
+$env:Jwt__AccessTokenMinutes="60"
+
+dotnet ef database update --project src\DeviceManagerBE.Infrastructure\DeviceManagerBE.Infrastructure.csproj --startup-project src\DeviceManagerBE\DeviceManagerBE.csproj --context DeviceManagerBE.Infrastructure.Persistence.ApplicationDbContext
+```
+

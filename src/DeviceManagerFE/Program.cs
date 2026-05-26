@@ -8,6 +8,7 @@ using DeviceManagerFE.Features.Devices.Application.UseCases;
 using DeviceManagerFE.Features.Devices.Infrastructure.Repositories;
 using DeviceManagerFE.Features.Devices.Presentation.Services;
 using DeviceManagerFE.Services;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,15 +57,39 @@ builder.Services.AddScoped<IDeviceInventoryPresenter, DeviceInventoryPresenter>(
 
 var app = builder.Build();
 
+var useForwardedHeaders = builder.Configuration.GetValue("HttpPipeline:UseForwardedHeaders", true);
+var forceHttps = builder.Configuration.GetValue("HttpPipeline:ForceHttps", false);
+
+if (useForwardedHeaders)
+{
+    var forwardedHeadersOptions = new ForwardedHeadersOptions
+    {
+        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+        ForwardLimit = 1
+    };
+
+    forwardedHeadersOptions.KnownNetworks.Clear();
+    forwardedHeadersOptions.KnownProxies.Clear();
+
+    app.UseForwardedHeaders(forwardedHeadersOptions);
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+
+    if (forceHttps)
+    {
+        // Only enable HSTS when the origin is allowed to serve HTTPS directly.
+        app.UseHsts();
+    }
 }
 
-app.UseHttpsRedirection();
+if (forceHttps)
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseStaticFiles();
 app.UseSession();
