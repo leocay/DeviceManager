@@ -1,6 +1,8 @@
 ﻿:root {
     --page-content-max-width: 1240px;
     --page-hero-min-height: 108px;
+    --device-action-button-width: 207px;
+    --device-action-button-height: 42px;
     --on-surface: #191c1e;
     --on-primary: #ffffff;
     --surface: #f7f9fb;
@@ -60,28 +62,36 @@ html {
 .login-wrapper {
     width: 100%;
     max-width: 560px;
+    min-height: 620px;
+    display: flex;
+    flex-direction: column;
 }
 
 .brand-header {
     text-align: center;
-    margin-bottom: 28px;
+    min-height: 210px;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .brand-title {
     margin: 0;
     font-family: "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
-    font-size: 1.7rem;
+    font-size: 2rem;
     font-weight: 800;
-    line-height: 1.2;
+    line-height: 1.35;
+    letter-spacing: 0.04em;
     outline: none;
     white-space: nowrap;
 }
 
 .brand-subtitle {
-    margin: 8px 0 0;
-    font-size: 0.72rem;
-    letter-spacing: 0.2em;
-    color: var(--outline);
+    margin: 14px 0 0;
+    font-size: 1.18rem;
+    letter-spacing: 0.28em;
+    color: #0284c7;
     font-weight: 700;
 }
 
@@ -262,6 +272,14 @@ html {
 @media (max-width: 640px) {
     .login-shell {
         padding: 14px;
+    }
+
+    .login-wrapper {
+        min-height: auto;
+    }
+
+    .brand-header {
+        min-height: 142px;
     }
 
     .login-card {
@@ -519,13 +537,20 @@ html {
     border: none;
     border-radius: 8px;
     padding: 10px 16px;
-    min-height: 44px;
+    width: var(--device-action-button-width);
+    height: var(--device-action-button-height);
+    min-width: var(--device-action-button-width);
+    min-height: var(--device-action-button-height);
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     background: linear-gradient(135deg, #1a4acc 0%, #1f5be0 100%);
     color: #ffffff;
+    font-family: "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+    font-size: 0.95rem;
     font-weight: 700;
+    line-height: 1;
     cursor: pointer;
     box-shadow: 0 8px 22px rgba(31, 91, 224, 0.24);
 }
@@ -539,7 +564,8 @@ html {
 }
 
 .inventory-filters {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, 1.35fr) 148px;
     gap: 12px;
     margin-bottom: 18px;
     background: #ffffff;
@@ -551,8 +577,7 @@ html {
 
 .search-wrap {
     position: relative;
-    min-width: 280px;
-    flex: 1;
+    min-width: 0;
 }
 
 .search-wrap .material-symbols-outlined {
@@ -567,6 +592,7 @@ html {
 .inventory-filters input,
 .inventory-filters select {
     width: 100%;
+    height: 48px;
     border: 1px solid #dbe2ee;
     outline: none;
     border-radius: 8px;
@@ -581,19 +607,34 @@ html {
 }
 
 .inventory-filters select {
-    min-width: 180px;
+    min-width: 0;
 }
 
 .clear-filter-btn {
-    border: none;
-    background: transparent;
-    color: #556684;
-    font-size: 0.82rem;
+    border: 1px solid #cfd9ea;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #ffffff 0%, #f4f7fc 100%);
+    color: #344767;
+    font-family: "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+    font-size: 0.86rem;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.02em;
     font-weight: 700;
+    font-variant-ligatures: none;
     cursor: pointer;
-    padding: 8px;
+    padding: 0 14px;
+    width: 148px;
+    min-width: 0;
+    height: 48px;
+    min-height: 0;
+    white-space: nowrap;
+    box-shadow: 0 6px 14px rgba(37, 55, 92, 0.1);
+}
+
+.clear-filter-btn:hover {
+    background: #eef4ff;
+    border-color: #b9c8e4;
+    color: #1f4fbf;
 }
 
 .inventory-table-wrap {
@@ -796,7 +837,7 @@ html {
 
     .inventory-header,
     .inventory-filters {
-        flex-direction: column;
+        grid-template-columns: 1fr;
         align-items: stretch;
     }
 
@@ -1144,8 +1185,20 @@ html {
 .create-device-page .primary-btn {
     border: none;
     color: #ffffff;
-    background: linear-gradient(135deg, #1748cb 0%, #0d3fb7 100%);
-    box-shadow: 0 10px 24px rgba(23, 72, 203, 0.24);
+    width: var(--device-action-button-width);
+    height: var(--device-action-button-height);
+    min-width: var(--device-action-button-width);
+    min-height: var(--device-action-button-height);
+    max-width: var(--device-action-button-width);
+    max-height: var(--device-action-button-height);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-family: "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg, #1a4acc 0%, #1f5be0 100%);
+    box-shadow: 0 8px 22px rgba(31, 91, 224, 0.24);
 }
 
 .create-device-page .secondary-btn {
@@ -1313,6 +1366,10 @@ html {
     .create-device-page .primary-btn,
     .create-device-page .secondary-btn {
         flex: 1;
+    }
+
+    .create-device-page .primary-btn {
+        flex: 0 0 var(--device-action-button-width);
     }
 
     .create-device-page .two-columns,
@@ -1496,20 +1553,20 @@ html {
     grid-template-columns: minmax(0, 1fr) auto;
     column-gap: 16px;
     align-items: start;
-    margin: 0 0 18px;
+    margin: 0 0 12px;
 }
 
 .page-layout .strict-header-main {
     display: grid;
-    grid-template-rows: 31px auto;
-    row-gap: 18px;
+    grid-template-rows: 27px auto;
+    row-gap: 10px;
 }
 
 .page-layout .strict-header-row,
 .page-layout .strict-header-row-placeholder {
-    height: 31px;
-    min-height: 31px;
-    max-height: 31px;
+    height: 27px;
+    min-height: 27px;
+    max-height: 27px;
     display: flex;
     align-items: center;
 }
@@ -1519,9 +1576,9 @@ html {
 }
 
 .page-layout .strict-back-link {
-    height: 31px;
-    min-height: 31px;
-    max-height: 31px;
+    height: 27px;
+    min-height: 27px;
+    max-height: 27px;
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -1539,7 +1596,7 @@ html {
 }
 
 .page-layout .strict-header-copy {
-    min-height: var(--page-hero-min-height);
+    min-height: 74px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -1548,7 +1605,7 @@ html {
 .page-layout .strict-title {
     margin: 0;
     font-family: "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
-    font-size: 2rem;
+    font-size: 1.8rem;
     line-height: 1.15;
     font-weight: 800;
     letter-spacing: -0.02em;
@@ -1563,7 +1620,7 @@ html {
 }
 
 .page-layout .strict-header-actions {
-    min-height: calc(31px + 18px + var(--page-hero-min-height));
+    min-height: 111px;
     display: inline-flex;
     align-items: center;
     justify-content: flex-end;
@@ -1856,6 +1913,10 @@ html {
 
 .device-form-card {
     padding: 28px !important;
+}
+
+.create-device-page .device-form-card {
+    padding: 18px !important;
 }
 
 .detail-history-card tbody tr:last-child td {

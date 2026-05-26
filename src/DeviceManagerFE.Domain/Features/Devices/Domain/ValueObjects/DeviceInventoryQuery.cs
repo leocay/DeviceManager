@@ -12,6 +12,6 @@ public sealed record DeviceInventoryQuery(
         CategoryId: string.Empty,
         Status: string.Empty,
         PageNumber: 1,
-        PageSize: 8);
+        PageSize: 5);
 }
 
