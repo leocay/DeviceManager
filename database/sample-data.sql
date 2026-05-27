@@ -8,26 +8,26 @@ GO
 
 SET IDENTITY_INSERT [dbo].[DeviceCategories] ON;
 INSERT INTO [dbo].[DeviceCategories] ([CategoryId], [CategoryName], [Description]) VALUES
-(1, 'Laptop', 'Portable work laptop'),
-(2, 'Desktop', 'Office desktop PC'),
-(3, 'Monitor', 'External display monitor'),
-(4, 'Printer', 'Office laser printer'),
-(5, 'Scanner', 'Document scanner'),
-(6, 'Projector', 'Meeting room projector'),
-(7, 'Network Switch', 'Managed network switch'),
-(8, 'Router', 'Wireless router'),
-(9, 'WiFi Access Point', 'Wireless access point'),
-(10, 'UPS', 'Uninterruptible power supply'),
-(11, 'Server', 'Rack server'),
-(12, 'Keyboard', 'Wired keyboard'),
-(13, 'Mouse', 'Wireless mouse'),
-(14, 'Docking Station', 'Laptop docking station'),
-(15, 'Tablet', 'Business tablet'),
-(16, 'Smartphone', 'Company phone'),
-(17, 'Headset', 'Noise cancelling headset'),
-(18, 'Webcam', 'HD webcam'),
-(19, 'SSD', 'Solid state drive'),
-(20, 'HDD', 'Hard disk drive');
+(1, 'Laptop', '/images/device-categories/laptop.svg'),
+(2, 'Desktop', '/images/device-categories/desktop.svg'),
+(3, 'Monitor', '/images/device-categories/monitor.svg'),
+(4, 'Printer', '/images/device-categories/printer.svg'),
+(5, 'Scanner', '/images/device-categories/scanner.svg'),
+(6, 'Projector', '/images/device-categories/projector.svg'),
+(7, 'Network Switch', '/images/device-categories/network-switch.svg'),
+(8, 'Router', '/images/device-categories/router.svg'),
+(9, 'WiFi Access Point', '/images/device-categories/wifi-access-point.svg'),
+(10, 'UPS', '/images/device-categories/ups.svg'),
+(11, 'Server', '/images/device-categories/server.svg'),
+(12, 'Keyboard', '/images/device-categories/keyboard.svg'),
+(13, 'Mouse', '/images/device-categories/mouse.svg'),
+(14, 'Docking Station', '/images/device-categories/docking-station.svg'),
+(15, 'Tablet', '/images/device-categories/tablet.svg'),
+(16, 'Smartphone', '/images/device-categories/smartphone.svg'),
+(17, 'Headset', '/images/device-categories/headset.svg'),
+(18, 'Webcam', '/images/device-categories/webcam.svg'),
+(19, 'SSD', '/images/device-categories/ssd.svg'),
+(20, 'HDD', '/images/device-categories/hdd.svg');
 SET IDENTITY_INSERT [dbo].[DeviceCategories] OFF;
 GO
 

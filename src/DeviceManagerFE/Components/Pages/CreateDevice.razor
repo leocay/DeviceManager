@@ -48,6 +48,10 @@
         {
             <p>Đang tải thông tin thiết bị...</p>
         }
+        else if (EditContext is null)
+        {
+            <p>Đang chuẩn bị biểu mẫu...</p>
+        }
         else
         {
             <EditForm EditContext="EditContext" OnValidSubmit="HandleSubmitAsync" FormName="CreateDeviceForm" id="create-device-form" method="post" class="device-form">

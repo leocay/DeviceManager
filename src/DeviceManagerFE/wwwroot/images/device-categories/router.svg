@@ -1,0 +1,17 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 400" role="img" aria-label="Router device category illustration">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fbff"/>
+      <stop offset="1" stop-color="#e8effa"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#16305f" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <rect width="520" height="400" rx="32" fill="url(#bg)"/>
+  <circle cx="430" cy="78" r="74" fill="#d8e5fb" opacity="0.8"/>
+  <circle cx="88" cy="318" r="58" fill="#eef4ff"/>
+  <g filter="url(#shadow)">
+    <rect x="116" y="174" width="288" height="106" rx="24" fill="#263f73"/><path d="M158 166l-34-72" stroke="#16233d" stroke-width="14" stroke-linecap="round"/><path d="M362 166l34-72" stroke="#16233d" stroke-width="14" stroke-linecap="round"/><circle cx="214" cy="226" r="8" fill="#64d2ff"/><circle cx="260" cy="226" r="8" fill="#79e6a0"/><circle cx="306" cy="226" r="8" fill="#ffd166"/><path d="M230 142q30-30 60 0" fill="none" stroke="#76a5ff" stroke-width="10" stroke-linecap="round"/>
+  </g>
+</svg>

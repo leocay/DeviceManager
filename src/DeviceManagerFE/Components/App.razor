@@ -11,19 +11,40 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="app.css?v=20260427-1715" />
     <link rel="stylesheet" href="DeviceManagerFE.styles.css?v=20260427-1715" />
-    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <script>
         window.blazorGetCookie = function (name) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
+            if (parts.length === 2) return decodeURIComponent(parts.pop().split(';').shift() ?? '');
             return null;
+        };
+        window.blazorSetCookie = function (name, value, hours) {
+            const expires = new Date(Date.now() + ((hours ?? 8) * 60 * 60 * 1000)).toUTCString();
+            document.cookie = `${name}=${encodeURIComponent(value ?? '')}; expires=${expires}; path=/; SameSite=Lax`;
+            return true;
+        };
+        window.blazorRemoveCookie = function (name) {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax`;
+            return true;
         };
         window.blazorSetLocal = function (name, value) {
             try { localStorage.setItem(name, value ?? ''); return true; } catch { return false; }
         };
         window.blazorGetLocal = function (name) {
             try { return localStorage.getItem(name); } catch { return null; }
+        };
+        window.blazorRemoveLocal = function (name) {
+            try { localStorage.removeItem(name); return true; } catch { return false; }
+        };
+        window.blazorClearAuth = function () {
+            try {
+                localStorage.removeItem('__Auth_AccessToken');
+                localStorage.removeItem('__Auth_FullName');
+            } catch { }
+            window.blazorRemoveCookie('__Auth_AccessToken');
+            window.blazorRemoveCookie('__Auth_FullName');
+            return true;
         };
     </script>
     <HeadOutlet @rendermode="new InteractiveServerRenderMode(prerender: false)" />

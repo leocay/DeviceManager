@@ -46,8 +46,15 @@
             <section class="device-form-card detail-card">
                 <div class="card-title is-blue">Tổng quan thiết bị</div>
                 <div class="detail-hero-grid">
-                    <div class="detail-device-photo" aria-hidden="true">
-                        <span class="material-symbols-outlined">devices</span>
+                    <div class="detail-device-photo">
+                        @if (HasCategoryImage)
+                        {
+                            <img src="@DeviceImageUrl" alt="@DeviceDetail.DeviceName" loading="lazy" />
+                        }
+                        else
+                        {
+                            <span class="material-symbols-outlined" aria-hidden="true">devices</span>
+                        }
                     </div>
                     <div class="detail-meta-grid">
                         <div class="detail-meta-item">

@@ -15,11 +15,12 @@ public class DevicesPageBase : ComponentBase
     [Inject] protected IDeleteDeviceUseCase DeleteDeviceUseCase { get; set; } = default!;
     [Inject] protected IDeviceInventoryPresenter DeviceInventoryPresenter { get; set; } = default!;
     [Inject] protected AuthSessionState AuthSessionState { get; set; } = default!;
+    [Inject] protected BrowserAuthSessionRestorer AuthSessionRestorer { get; set; } = default!;
     [Inject] protected NavigationManager NavigationManager { get; set; } = default!;
     [Inject] protected IJSRuntime JSRuntime { get; set; } = default!;
 
     protected IReadOnlyList<DeviceRowViewModel> Devices { get; private set; } = [];
-    protected bool Loading { get; private set; }
+    protected bool Loading { get; private set; } = true;
     protected string? ErrorMessage { get; private set; }
     protected string? StatusMessage { get; private set; }
     protected bool IsError { get; private set; }
@@ -36,38 +37,51 @@ public class DevicesPageBase : ComponentBase
     protected string AvatarText => string.IsNullOrWhiteSpace(DisplayName)
         ? "A"
         : DisplayName[..1].ToUpperInvariant();
+    private bool _initialized;
 
     protected override async Task OnInitializedAsync()
     {
-        if (!AuthSessionState.IsAuthenticated)
+        if (AuthSessionRestorer.RestoreFromCurrentRequest())
         {
-            try
-            {
-                var token = await JSRuntime.InvokeAsync<string?>("blazorGetLocal", "__Auth_AccessToken");
-                var name = await JSRuntime.InvokeAsync<string?>("blazorGetLocal", "__Auth_FullName");
-                if (string.IsNullOrWhiteSpace(token))
-                {
-                    token = await JSRuntime.InvokeAsync<string?>("blazorGetCookie", "__Auth_AccessToken");
-                    name = await JSRuntime.InvokeAsync<string?>("blazorGetCookie", "__Auth_FullName");
-                }
-
-                if (!string.IsNullOrWhiteSpace(token))
-                {
-                    AuthSessionState.AccessToken = token;
-                    AuthSessionState.FullName = name;
-                }
-            }
-            catch
-            {
-            }
+            await InitializePageAsync();
         }
+    }
 
-        if (!AuthSessionState.IsAuthenticated)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || _initialized)
         {
-            NavigationManager.NavigateTo("/");
             return;
         }
 
+        if (!AuthSessionState.IsAuthenticated)
+        {
+            var restored = await AuthSessionRestorer.RestoreFromBrowserAsync();
+            if (!restored)
+            {
+                NavigationManager.NavigateTo("/");
+                return;
+            }
+        }
+
+        await InitializePageAsync();
+        StateHasChanged();
+    }
+
+    private async Task InitializePageAsync()
+    {
+        if (_initialized)
+        {
+            return;
+        }
+
+        if (!AuthSessionState.IsAuthenticated)
+        {
+            Loading = true;
+            return;
+        }
+
+        _initialized = true;
         await LoadDevicesAsync();
     }
 

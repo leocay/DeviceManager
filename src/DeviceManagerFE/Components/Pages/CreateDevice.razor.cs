@@ -17,6 +17,7 @@ public class CreateDevicePageBase : ComponentBase
     [Inject] protected IGetEmployeeDirectoryUseCase GetEmployeeDirectoryUseCase { get; set; } = default!;
     [Inject] protected IDeviceInventoryPresenter DeviceInventoryPresenter { get; set; } = default!;
     [Inject] protected AuthSessionState AuthSessionState { get; set; } = default!;
+    [Inject] protected BrowserAuthSessionRestorer AuthSessionRestorer { get; set; } = default!;
     [Inject] protected IJSRuntime JSRuntime { get; set; } = default!;
     [Inject] protected NavigationManager NavigationManager { get; set; } = default!;
 
@@ -29,7 +30,7 @@ public class CreateDevicePageBase : ComponentBase
     protected ValidationMessageStore ValidationMessageStore { get; private set; } = default!;
     protected bool Submitting { get; private set; }
     protected bool EmployeesLoading { get; private set; }
-    protected bool PageLoading { get; private set; }
+    protected bool PageLoading { get; private set; } = true;
     protected string? StatusMessage { get; private set; }
     protected bool IsError { get; private set; }
     protected bool IsEditMode => DeviceId.HasValue;
@@ -44,38 +45,51 @@ public class CreateDevicePageBase : ComponentBase
     protected IReadOnlyList<EmployeeOptionDto> EmployeeOptions { get; private set; } = [];
     protected string DisplayName => string.IsNullOrWhiteSpace(AuthSessionState.FullName) ? "Administrator" : AuthSessionState.FullName;
     protected string AvatarText => string.IsNullOrWhiteSpace(DisplayName) ? "A" : DisplayName[..1].ToUpperInvariant();
+    private bool _initialized;
 
     protected override async Task OnInitializedAsync()
     {
+        if (AuthSessionRestorer.RestoreFromCurrentRequest())
+        {
+            await InitializePageAsync();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || _initialized)
+        {
+            return;
+        }
+
         if (!AuthSessionState.IsAuthenticated)
         {
-            try
-            {
-                var token = await JSRuntime.InvokeAsync<string?>("blazorGetLocal", "__Auth_AccessToken");
-                var name = await JSRuntime.InvokeAsync<string?>("blazorGetLocal", "__Auth_FullName");
-                if (string.IsNullOrWhiteSpace(token))
-                {
-                    token = await JSRuntime.InvokeAsync<string?>("blazorGetCookie", "__Auth_AccessToken");
-                    name = await JSRuntime.InvokeAsync<string?>("blazorGetCookie", "__Auth_FullName");
-                }
-
-                if (!string.IsNullOrWhiteSpace(token))
-                {
-                    AuthSessionState.AccessToken = token;
-                    AuthSessionState.FullName = name;
-                }
-            }
-            catch
-            {
-            }
-
-            if (!AuthSessionState.IsAuthenticated)
+            var restored = await AuthSessionRestorer.RestoreFromBrowserAsync();
+            if (!restored)
             {
                 NavigationManager.NavigateTo("/");
                 return;
             }
         }
 
+        await InitializePageAsync();
+        StateHasChanged();
+    }
+
+    private async Task InitializePageAsync()
+    {
+        if (_initialized)
+        {
+            return;
+        }
+
+        if (!AuthSessionState.IsAuthenticated)
+        {
+            PageLoading = true;
+            return;
+        }
+
+        _initialized = true;
         EmployeesLoading = true;
         PageLoading = true;
 

@@ -13,6 +13,7 @@ public class DeviceDetailPageBase : ComponentBase
     [Inject] protected IGetEmployeeDirectoryUseCase GetEmployeeDirectoryUseCase { get; set; } = default!;
     [Inject] protected IDeviceInventoryPresenter DeviceInventoryPresenter { get; set; } = default!;
     [Inject] protected AuthSessionState AuthSessionState { get; set; } = default!;
+    [Inject] protected BrowserAuthSessionRestorer AuthSessionRestorer { get; set; } = default!;
     [Inject] protected IJSRuntime JSRuntime { get; set; } = default!;
     [Inject] protected NavigationManager NavigationManager { get; set; } = default!;
 
@@ -20,7 +21,7 @@ public class DeviceDetailPageBase : ComponentBase
 
     protected DeviceEditorDto? DeviceDetail { get; private set; }
     protected IReadOnlyList<EmployeeOptionDto> Employees { get; private set; } = [];
-    protected bool PageLoading { get; private set; }
+    protected bool PageLoading { get; private set; } = true;
     protected string? StatusMessage { get; private set; }
     protected bool IsError { get; private set; }
     protected bool CanEdit => DeviceDetail is not null;
@@ -45,10 +46,31 @@ public class DeviceDetailPageBase : ComponentBase
                 return "-";
             }
 
+            if (!string.IsNullOrWhiteSpace(DeviceDetail.CategoryName))
+            {
+                return DeviceDetail.CategoryName;
+            }
+
             var category = DeviceInventoryPresenter.CategoryOptions.FirstOrDefault(
                 option => option.Value == DeviceDetail.CategoryId.ToString());
 
             return category?.Label ?? "-";
+        }
+    }
+
+    protected bool HasCategoryImage => !string.IsNullOrWhiteSpace(DeviceImageUrl);
+
+    protected string? DeviceImageUrl
+    {
+        get
+        {
+            var imageUrl = DeviceDetail?.CategoryImageUrl?.Trim();
+            if (string.IsNullOrWhiteSpace(imageUrl))
+            {
+                return null;
+            }
+
+            return imageUrl;
         }
     }
 
@@ -149,45 +171,51 @@ public class DeviceDetailPageBase : ComponentBase
                 .ToList();
         }
     }
+    private bool _initialized;
 
     protected override async Task OnInitializedAsync()
     {
-        if (!AuthSessionState.IsAuthenticated)
+        if (AuthSessionRestorer.RestoreFromCurrentRequest())
         {
-            NavigationManager.NavigateTo("/");
+            await InitializePageAsync();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || _initialized)
+        {
             return;
         }
 
-        // try to populate auth from cookie if not already authenticated
         if (!AuthSessionState.IsAuthenticated)
         {
-            try
+            var restored = await AuthSessionRestorer.RestoreFromBrowserAsync();
+            if (!restored)
             {
-                var token = await JSRuntime.InvokeAsync<string?>("blazorGetLocal", "__Auth_AccessToken");
-                var name = await JSRuntime.InvokeAsync<string?>("blazorGetLocal", "__Auth_FullName");
-                if (string.IsNullOrWhiteSpace(token))
-                {
-                    token = await JSRuntime.InvokeAsync<string?>("blazorGetCookie", "__Auth_AccessToken");
-                    name = await JSRuntime.InvokeAsync<string?>("blazorGetCookie", "__Auth_FullName");
-                }
-
-                if (!string.IsNullOrWhiteSpace(token))
-                {
-                    AuthSessionState.AccessToken = token;
-                    AuthSessionState.FullName = name;
-                }
-            }
-            catch
-            {
+                NavigationManager.NavigateTo("/");
+                return;
             }
         }
 
-        if (!AuthSessionState.IsAuthenticated)
+        await InitializePageAsync();
+        StateHasChanged();
+    }
+
+    private async Task InitializePageAsync()
+    {
+        if (_initialized)
         {
-            NavigationManager.NavigateTo("/");
             return;
         }
 
+        if (!AuthSessionState.IsAuthenticated)
+        {
+            PageLoading = true;
+            return;
+        }
+
+        _initialized = true;
         PageLoading = true;
         StatusMessage = null;
 

@@ -102,6 +102,7 @@ public class DevicesController : ControllerBase
             DeviceName = result.DeviceName,
             CategoryId = result.CategoryId,
             CategoryName = result.CategoryName,
+            CategoryDescription = result.CategoryDescription,
             EmployeeId = result.EmployeeId,
             Brand = result.Brand,
             Model = result.Model,

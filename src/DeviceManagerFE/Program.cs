@@ -41,6 +41,7 @@ builder.Services.AddHttpClient<DeviceApiClient>((serviceProvider, client) =>
 });
 
 builder.Services.AddScoped<AuthSessionState>();
+builder.Services.AddScoped<BrowserAuthSessionRestorer>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
 builder.Services.AddScoped<ILoginPresenter, LoginPresenter>();

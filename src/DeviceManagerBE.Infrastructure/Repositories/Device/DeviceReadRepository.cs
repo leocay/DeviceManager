@@ -104,6 +104,7 @@ public class DeviceReadRepository : IDeviceReadRepository
                 DeviceName = d.DeviceName,
                 CategoryId = d.CategoryId,
                 CategoryName = d.Category != null ? d.Category.CategoryName : string.Empty,
+                CategoryDescription = d.Category != null ? d.Category.Description : null,
                 EmployeeId = d.EmployeeId,
                 Brand = d.Brand,
                 Model = d.Model,

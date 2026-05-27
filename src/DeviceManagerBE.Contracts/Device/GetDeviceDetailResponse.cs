@@ -7,6 +7,7 @@ public sealed class GetDeviceDetailResponse
     public string DeviceName { get; init; } = string.Empty;
     public int CategoryId { get; init; }
     public string CategoryName { get; init; } = string.Empty;
+    public string? CategoryDescription { get; init; }
     public int? EmployeeId { get; init; }
     public string? Brand { get; init; }
     public string? Model { get; init; }

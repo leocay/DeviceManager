@@ -98,6 +98,8 @@ public class HomePageBase : ComponentBase
         {
             await JSRuntime.InvokeVoidAsync("blazorSetLocal", "__Auth_AccessToken", result.AccessToken ?? string.Empty);
             await JSRuntime.InvokeVoidAsync("blazorSetLocal", "__Auth_FullName", result.FullName ?? string.Empty);
+            await JSRuntime.InvokeVoidAsync("blazorSetCookie", "__Auth_AccessToken", result.AccessToken ?? string.Empty, 8);
+            await JSRuntime.InvokeVoidAsync("blazorSetCookie", "__Auth_FullName", result.FullName ?? string.Empty, 8);
             Logger.LogInformation("HomePage: requested setting localStorage tokens for user '{Name}'", result.FullName);
         }
         catch (Exception ex)

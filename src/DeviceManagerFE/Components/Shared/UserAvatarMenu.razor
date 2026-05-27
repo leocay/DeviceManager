@@ -1,6 +1,7 @@
 @using DeviceManagerFE.Services
 @inject AuthSessionState AuthSessionState
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 
 <div class="topbar-user-menu">
     <button type="button" class="topbar-user-button" @onclick="ToggleMenu" aria-haspopup="menu" aria-expanded="@IsOpen">
@@ -46,11 +47,18 @@
         IsOpen = false;
     }
 
-    private Task LogoutAsync()
+    private async Task LogoutAsync()
     {
         AuthSessionState.Clear();
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("blazorClearAuth");
+        }
+        catch
+        {
+        }
+
         CloseMenu();
         NavigationManager.NavigateTo("/", forceLoad: true);
-        return Task.CompletedTask;
     }
 }

@@ -37,9 +37,7 @@ public sealed class EmployeesController : ControllerBase
                     EmployeeCode = employee.EmployeeCode,
                     FullName = employee.FullName,
                     Department = employee.Department,
-                    DisplayName = string.IsNullOrWhiteSpace(employee.Department)
-                        ? $"{employee.EmployeeCode} - {employee.FullName}"
-                        : $"{employee.EmployeeCode} - {employee.FullName} ({employee.Department})"
+                    DisplayName = $"{employee.EmployeeCode} - {employee.FullName}"
                 })
                 .ToList()
         });

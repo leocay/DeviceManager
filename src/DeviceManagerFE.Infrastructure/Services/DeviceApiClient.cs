@@ -104,6 +104,8 @@ public class DeviceApiClient
             DeviceCode = result.DeviceCode,
             DeviceName = result.DeviceName,
             CategoryId = result.CategoryId,
+            CategoryName = result.CategoryName,
+            CategoryImageUrl = result.CategoryDescription,
             EmployeeId = result.EmployeeId,
             Brand = result.Brand,
             Model = result.Model,
