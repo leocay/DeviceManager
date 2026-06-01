@@ -93,6 +93,7 @@ public class DeviceDetailPageBase : ComponentBase
     protected string StatusCssClass => StatusLabel switch
     {
         "Mới" => "is-new",
+        "Trong Kho" => "is-stock",
         "Đang sử dụng" => "is-active",
         "Bảo trì" => "is-maintenance",
         "Đã đặt trước" => "is-reserved",

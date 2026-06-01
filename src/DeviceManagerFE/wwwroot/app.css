@@ -723,6 +723,11 @@ html {
     color: #1e8740;
 }
 
+.status-pill.is-stock {
+    background: #e9f7f4;
+    color: #147567;
+}
+
 .status-pill.is-active {
     background: #e7eefc;
     color: #2353c6;

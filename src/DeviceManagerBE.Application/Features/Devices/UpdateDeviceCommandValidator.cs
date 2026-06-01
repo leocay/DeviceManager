@@ -8,6 +8,7 @@ public sealed class UpdateDeviceCommandValidator : AbstractValidator<UpdateDevic
     private static readonly string[] AllowedStatuses =
     [
         "Available",
+        "In Stock",
         "In Use",
         "Maintenance",
         "Reserved",

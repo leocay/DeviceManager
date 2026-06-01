@@ -17,6 +17,7 @@ public static class DeviceBusinessRules
     public static string ToLocalizedStatus(string? status) => status switch
     {
         "Available" => "Mới",
+        "In Stock" => "Trong Kho",
         "In Use" => "Đang sử dụng",
         "Maintenance" => "Bảo trì",
         "Reserved" => "Đã đặt trước",

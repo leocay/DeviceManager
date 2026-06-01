@@ -34,6 +34,7 @@ public sealed class DeviceInventoryPresenter : IDeviceInventoryPresenter
     [
         new(string.Empty, "Tất cả"),
         new("Available", "Mới"),
+        new("In Stock", "Trong Kho"),
         new("In Use", "Đang sử dụng"),
         new("Maintenance", "Bảo trì"),
         new("Reserved", "Đã đặt trước"),
@@ -69,6 +70,7 @@ public sealed class DeviceInventoryPresenter : IDeviceInventoryPresenter
     private static string ToStatusCssClass(string statusLabel) => statusLabel switch
     {
         "Mới" => "is-new",
+        "Trong Kho" => "is-stock",
         "Đang sử dụng" => "is-active",
         "Bảo trì" => "is-maintenance",
         "Đã đặt trước" => "is-reserved",

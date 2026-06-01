@@ -46,7 +46,7 @@ public class DeviceReadRepository : IDeviceReadRepository
         // Apply status filter
         if (!string.IsNullOrWhiteSpace(status))
         {
-            query = query.Where(d => d.Status == status);
+            query = query.Where(d => d.Status == status.Trim());
         }
 
         // Get total count before pagination
