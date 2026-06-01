@@ -7,6 +7,7 @@ namespace DeviceManagerBE.Infrastructure.Repositories.Device;
 
 public class DeviceReadRepository : IDeviceReadRepository
 {
+    private const string AccentInsensitiveSearchCollation = "Latin1_General_100_CI_AI";
     private readonly ApplicationDbContext _dbContext;
 
     public DeviceReadRepository(ApplicationDbContext dbContext)
@@ -32,9 +33,18 @@ public class DeviceReadRepository : IDeviceReadRepository
         // Apply search filter
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
+            var searchPattern = $"%{EscapeLikePattern(searchTerm.Trim())}%";
+
             query = query.Where(d =>
-                d.DeviceCode.Contains(searchTerm) ||
-                (d.Employee != null && d.Employee.FullName.Contains(searchTerm)));
+                EF.Functions.Like(
+                    EF.Functions.Collate(d.DeviceCode, AccentInsensitiveSearchCollation),
+                    searchPattern,
+                    @"\") ||
+                (d.Employee != null &&
+                    EF.Functions.Like(
+                        EF.Functions.Collate(d.Employee.FullName, AccentInsensitiveSearchCollation),
+                        searchPattern,
+                        @"\")));
         }
 
         // Apply category filter
@@ -125,6 +135,15 @@ public class DeviceReadRepository : IDeviceReadRepository
                     .ToList()
             })
             .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    private static string EscapeLikePattern(string value)
+    {
+        return value
+            .Replace(@"\", @"\\", StringComparison.Ordinal)
+            .Replace("%", @"\%", StringComparison.Ordinal)
+            .Replace("_", @"\_", StringComparison.Ordinal)
+            .Replace("[", "[[]", StringComparison.Ordinal);
     }
 }
 

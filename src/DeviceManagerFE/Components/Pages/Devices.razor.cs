@@ -9,8 +9,10 @@ using Microsoft.JSInterop;
 
 namespace DeviceManagerFE.Components.Pages;
 
-public class DevicesPageBase : ComponentBase
+public class DevicesPageBase : ComponentBase, IDisposable
 {
+    private const int SearchDebounceMilliseconds = 350;
+
     [Inject] protected IGetDeviceInventoryUseCase GetDeviceInventoryUseCase { get; set; } = default!;
     [Inject] protected IDeleteDeviceUseCase DeleteDeviceUseCase { get; set; } = default!;
     [Inject] protected IDeviceInventoryPresenter DeviceInventoryPresenter { get; set; } = default!;
@@ -27,6 +29,7 @@ public class DevicesPageBase : ComponentBase
     protected DeviceInventoryQuery Query { get; private set; } = DeviceInventoryQuery.Default;
     protected int TotalCount { get; private set; }
     protected int TotalPages { get; private set; } = 1;
+    protected int SearchInputKey { get; private set; }
     protected IReadOnlyList<FilterOptionViewModel> CategoryOptions => DeviceInventoryPresenter.CategoryOptions;
     protected IReadOnlyList<FilterOptionViewModel> StatusOptions => DeviceInventoryPresenter.StatusOptions;
 
@@ -38,6 +41,8 @@ public class DevicesPageBase : ComponentBase
         ? "A"
         : DisplayName[..1].ToUpperInvariant();
     private bool _initialized;
+    private int _queryRevision;
+    private CancellationTokenSource? _searchDebounceCts;
 
     protected override async Task OnInitializedAsync()
     {
@@ -85,7 +90,7 @@ public class DevicesPageBase : ComponentBase
         await LoadDevicesAsync();
     }
 
-    protected async Task OnSearchInputAsync(ChangeEventArgs args)
+    protected Task OnSearchInputAsync(ChangeEventArgs args)
     {
         Query = Query with
         {
@@ -93,34 +98,50 @@ public class DevicesPageBase : ComponentBase
             PageNumber = 1
         };
 
-        await LoadDevicesAsync();
+        MarkQueryChanged();
+        CancelPendingSearch();
+
+        var debounceCts = new CancellationTokenSource();
+        _searchDebounceCts = debounceCts;
+
+        _ = DebounceSearchAsync(debounceCts);
+        return Task.CompletedTask;
     }
 
     protected async Task OnCategoryChangedAsync(ChangeEventArgs args)
     {
+        CancelPendingSearch();
+
         Query = Query with
         {
             CategoryId = args.Value?.ToString() ?? string.Empty,
             PageNumber = 1
         };
 
+        MarkQueryChanged();
         await LoadDevicesAsync();
     }
 
     protected async Task OnStatusChangedAsync(ChangeEventArgs args)
     {
+        CancelPendingSearch();
+
         Query = Query with
         {
             Status = args.Value?.ToString() ?? string.Empty,
             PageNumber = 1
         };
 
+        MarkQueryChanged();
         await LoadDevicesAsync();
     }
 
     protected async Task ClearFiltersAsync()
     {
+        CancelPendingSearch();
         Query = DeviceInventoryQuery.Default;
+        SearchInputKey++;
+        MarkQueryChanged();
         await LoadDevicesAsync();
     }
 
@@ -131,7 +152,9 @@ public class DevicesPageBase : ComponentBase
             return;
         }
 
+        CancelPendingSearch();
         Query = Query with { PageNumber = Query.PageNumber - 1 };
+        MarkQueryChanged();
         await LoadDevicesAsync();
     }
 
@@ -142,7 +165,9 @@ public class DevicesPageBase : ComponentBase
             return;
         }
 
+        CancelPendingSearch();
         Query = Query with { PageNumber = Query.PageNumber + 1 };
+        MarkQueryChanged();
         await LoadDevicesAsync();
     }
 
@@ -153,7 +178,9 @@ public class DevicesPageBase : ComponentBase
             return;
         }
 
+        CancelPendingSearch();
         Query = Query with { PageNumber = pageNumber };
+        MarkQueryChanged();
         await LoadDevicesAsync();
     }
 
@@ -220,8 +247,10 @@ public class DevicesPageBase : ComponentBase
 
     private async Task LoadDevicesAsync(CancellationToken cancellationToken = default)
     {
+        var queryRevision = _queryRevision;
         Loading = true;
         ErrorMessage = null;
+        await InvokeAsync(StateHasChanged);
 
         try
         {
@@ -233,6 +262,12 @@ public class DevicesPageBase : ComponentBase
                 Query.PageSize);
 
             var result = await GetDeviceInventoryUseCase.ExecuteAsync(request, cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (queryRevision != _queryRevision)
+            {
+                return;
+            }
 
             if (result is null)
             {
@@ -245,13 +280,64 @@ public class DevicesPageBase : ComponentBase
             TotalCount = vm.TotalCount;
             TotalPages = vm.TotalPages;
         }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+        }
         catch
         {
-            ErrorMessage = "Có lỗi khi tải danh sách thiết bị.";
+            if (queryRevision == _queryRevision)
+            {
+                ErrorMessage = "Có lỗi khi tải danh sách thiết bị.";
+            }
         }
         finally
         {
-            Loading = false;
+            if (queryRevision == _queryRevision)
+            {
+                Loading = false;
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+    }
+
+    private async Task DebounceSearchAsync(CancellationTokenSource debounceCts)
+    {
+        try
+        {
+            await Task.Delay(SearchDebounceMilliseconds, debounceCts.Token);
+            await LoadDevicesAsync(debounceCts.Token);
+        }
+        catch (OperationCanceledException) when (debounceCts.IsCancellationRequested)
+        {
+        }
+        finally
+        {
+            if (ReferenceEquals(_searchDebounceCts, debounceCts))
+            {
+                _searchDebounceCts = null;
+            }
+
+            debounceCts.Dispose();
+        }
+    }
+
+    private void CancelPendingSearch()
+    {
+        var debounceCts = _searchDebounceCts;
+        if (debounceCts is null)
+        {
+            return;
+        }
+
+        _searchDebounceCts = null;
+        debounceCts.Cancel();
+    }
+
+    private void MarkQueryChanged()
+    {
+        unchecked
+        {
+            _queryRevision++;
         }
     }
 
@@ -262,10 +348,16 @@ public class DevicesPageBase : ComponentBase
         if (Devices.Count == 0 && TotalCount > 0 && Query.PageNumber > TotalPages)
         {
             Query = Query with { PageNumber = TotalPages };
+            MarkQueryChanged();
             await LoadDevicesAsync();
         }
 
         IsError = false;
         StatusMessage = message;
+    }
+
+    public void Dispose()
+    {
+        CancelPendingSearch();
     }
 }

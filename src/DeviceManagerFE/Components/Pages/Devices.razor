@@ -36,7 +36,7 @@
         <section class="inventory-filters">
             <div class="search-wrap">
                 <span class="material-symbols-outlined">search</span>
-                <input value="@Query.SearchTerm" @oninput="OnSearchInputAsync" placeholder="Tìm theo mã nội bộ hoặc tên người dùng..." />
+                <input @key="SearchInputKey" @oninput="OnSearchInputAsync" placeholder="Tìm theo mã nội bộ hoặc tên người dùng..." />
             </div>
 
             <select value="@Query.CategoryId" @onchange="OnCategoryChangedAsync">
